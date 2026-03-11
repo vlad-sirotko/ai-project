@@ -14,6 +14,7 @@ public static class InfrastructureServiceRegistration
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IDocumentRepository, DocumentRepository>();
+        services.AddScoped<ITranslationJobRepository, TranslationJobRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         return services;

@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<AppSetting> AppSettings => Set<AppSetting>();
     public DbSet<Document> Documents => Set<Document>();
+    public DbSet<TranslationJob> TranslationJobs => Set<TranslationJob>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -89,6 +90,33 @@ public class AppDbContext : DbContext
             entity.HasOne(d => d.User)
                 .WithMany()
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<TranslationJob>(entity =>
+        {
+            entity.HasKey(j => j.Id);
+
+            entity.Property(j => j.TargetLanguage)
+                .IsRequired()
+                .HasMaxLength(10);
+
+            entity.Property(j => j.Status)
+                .IsRequired()
+                .HasConversion<string>();
+
+            entity.Property(j => j.TranslatedText)
+                .HasColumnType("TEXT");
+
+            entity.Property(j => j.ErrorMessage)
+                .HasMaxLength(2048);
+
+            entity.Property(j => j.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(j => j.Document)
+                .WithMany()
+                .HasForeignKey(j => j.DocumentId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }
