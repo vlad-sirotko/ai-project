@@ -113,3 +113,16 @@ Create a new prompt for pull request
   - I added a new paraghraph in angular instruction - Use facade pattern for each componement to manage state and interactions with services, so no direct service calls in the component class or template
    - Review prompt: I want to you to check all frontend files and add a patern facade to all the components to avoid direct calls of data sources, try to add a facade to all the components and move all dependencies to this facade
    -update all task files with a new structure where needed
+7) Created tasks for the next feature
+   copilot didn't mark file as done and didn't add notes -fix by prompt: mark that task as done do it the same way as for auth-feature
+   Problem solving: ![alt text](image-10.png)
+   -- While i implemented task 3 copilot found a dependency on Task 4 and started to do both at the same time (i missed that dependency), so i had no objections
+   ![alt text](image-11.png)
+   --problem: the same issue for task 07 copilot didn't mark file as done and didn't add notes -fix by prompt: mark that task as done do it the same way as for auth-feature
+   --problem: copilot don't use facade pattern for ui
+   --fix: updates agent and intruction
+   **Critical rule — Facade Pattern**: Every component MUST have a co-located facade (`<component-name>.facade.ts`) declared in the component's `providers` array. Components may only inject their own facade — never stores, services, or repositories directly. The facade handles all state and service orchestration.
+8) Second feature initial run
+   problem - no languages in the list
+![alt text](image-12.png)
+   analizing - ![alt text](image-13.png) - result: this control will be done in admin feature

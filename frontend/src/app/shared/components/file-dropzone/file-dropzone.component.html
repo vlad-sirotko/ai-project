@@ -1,0 +1,39 @@
+<div
+  class="dropzone"
+  [class.dragover]="isDragOver()"
+  [class.file-selected]="selectedFile() !== null"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave()"
+  (drop)="onDrop($event)"
+  (click)="openFilePicker()"
+  role="button"
+  tabindex="0"
+  (keydown.enter)="openFilePicker()"
+  (keydown.space)="openFilePicker()"
+  aria-label="Upload file"
+>
+  <input
+    #fileInput
+    type="file"
+    [accept]="accept()"
+    class="file-input"
+    (change)="onFileInputChange($event)"
+    (click)="$event.stopPropagation()"
+    aria-hidden="true"
+    tabindex="-1"
+  />
+
+  @if (selectedFile(); as file) {
+    <div class="file-info">
+      <span class="file-icon" aria-hidden="true">📄</span>
+      <span class="file-name">{{ file.name }}</span>
+      <span class="file-size">{{ formatFileSize(file.size) }}</span>
+    </div>
+  } @else {
+    <div class="placeholder">
+      <span class="upload-icon" aria-hidden="true">☁️</span>
+      <p class="primary-text">Drag &amp; drop your PDF here</p>
+      <p class="secondary-text">or <span class="browse-link">click to browse</span></p>
+    </div>
+  }
+</div>

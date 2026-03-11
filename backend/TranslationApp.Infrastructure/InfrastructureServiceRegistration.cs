@@ -13,7 +13,10 @@ public static class InfrastructureServiceRegistration
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IDocumentRepository, DocumentRepository>();
+        services.AddScoped<ITranslationJobRepository, TranslationJobRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
         return services;
     }

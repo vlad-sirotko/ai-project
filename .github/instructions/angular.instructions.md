@@ -22,7 +22,8 @@ Instructions for generating high-quality Angular applications with TypeScript, u
 - Implement lazy loading for feature modules to optimize performance
 - Use Angular's built-in dependency injection system effectively
 - Structure components with a clear separation of concerns (smart vs. presentational components)
-- Use facade pattern for each componement to manage state and interactions with services, so no direct service calls in the component class or template
+- **Always use the facade pattern for every component**: create a `<component-name>.facade.ts` file co-located with the component, declare it in the component's `providers` array, and inject only the facade inside the component — never inject stores, services, or repositories directly into a component class or template
+- The facade is responsible for orchestrating store reads and service calls; the component only binds to facade-exposed signals and calls facade methods
 
 ### TypeScript
 - Enable strict mode in `tsconfig.json` for type safety
