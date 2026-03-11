@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.Channels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +10,12 @@ using TranslationApp.Infrastructure.Persistence;
 using TranslationApp.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Translation job queue (unbounded channel, consumed by TranslationBackgroundService)
+var translationChannel = Channel.CreateUnbounded<Guid>(new UnboundedChannelOptions { SingleReader = true });
+builder.Services.AddSingleton(translationChannel);
+builder.Services.AddSingleton(translationChannel.Writer);
+builder.Services.AddSingleton(translationChannel.Reader);
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options =>

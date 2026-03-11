@@ -116,3 +116,5 @@ Create a new prompt for pull request
 7) Created tasks for the next feature
    copilot didn't mark file as done and didn't add notes -fix by prompt: mark that task as done do it the same way as for auth-feature
    Problem solving: ![alt text](image-10.png)
+   -- While i implemented task 3 copilot found a dependency on Task 4 and started to do both at the same time (i missed that dependency), so i had no objections
+   ![alt text](image-11.png)
