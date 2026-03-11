@@ -1,0 +1,57 @@
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+
+import { RegisterFacade } from './register.facade';
+
+function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
+  return password === confirmPassword ? null : { passwordMismatch: true };
+}
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RegisterFacade],
+})
+export class RegisterComponent {
+  private readonly facade = inject(RegisterFacade);
+  private readonly fb = inject(FormBuilder);
+
+  readonly form = this.fb.group(
+    {
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required],
+    },
+    { validators: passwordMatchValidator }
+  );
+
+  readonly loading = signal(false);
+  readonly error = signal<string | null>(null);
+
+  async onSubmit(): Promise<void> {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.loading.set(true);
+    this.error.set(null);
+
+    try {
+      const { email, password } = this.form.getRawValue();
+      await this.facade.register(email!, password!);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : null;
+      this.error.set(message ?? 'Registration failed. Please try again.');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+}

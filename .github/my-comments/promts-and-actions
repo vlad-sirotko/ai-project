@@ -91,3 +91,25 @@ Create a new prompt for pull request
     ---problem stuck after pushing --- 
     ![alt text](image-2.png)
     How fixed - manually
+4) I used my implement-task prompt to implement tasks
+   and commit them one by one in the feature/auth-tasks for checking
+   Example of auth-task 4 result 
+   ![alt text](image-3.png)
+   -- I update my prompt if I see any issues or modifications f.e
+      Delete all unnecessary imports in the code files after implementation to keep the code clean and maintainable.
+   -- My first swagger run
+   ![alt text](image-4.png)   
+   -- While implemented task 09(first fronted task) I wanted to init ui app, asked copilot, but copilot created a lot of mocked components from the future tasks, so I had to undo the whole task
+5) First App init with a prompt I want to init api and ui projects and see them in a browser
+   -- What I saw
+   ![alt text](image-5.png)
+   -- After fix: delete standard angular html, show only my application layouts
+   ![alt text](image-6.png)
+   ![alt text](image-7.png)
+   I registed and tried to log in with incorrect password
+  ![alt text](image-9.png)
+  6) As a result of first implementation
+  - I created a new agent for ui 
+  - I added a new paraghraph in angular instruction - Use facade pattern for each componement to manage state and interactions with services, so no direct service calls in the component class or template
+   - Review prompt: I want to you to check all frontend files and add a patern facade to all the components to avoid direct calls of data sources, try to add a facade to all the components and move all dependencies to this facade
+   -update all task files with a new structure where needed

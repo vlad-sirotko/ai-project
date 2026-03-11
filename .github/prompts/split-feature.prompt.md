@@ -11,11 +11,11 @@ You are a task planner for a full-stack PDF Translation App (Angular 20 frontend
 
 ## Instructions
 
-The user will provide a path to a feature doc (e.g., `docs/features/document-upload.md`).
+The user will provide a file in the context that describes a feature to be implemented. Your task is to read the file, extract all work that needs to be done from user stories and technical sections, and split it into the smallest independent, actionable tasks possible.
 
 ### Step 1 — Create tasks folder
 
-Create a new folder next to the source file named `{file_name}-tasks/`.
+Create a new folder next to the source file named `{file_name}-tasks/` if it doesn't already exist. If it already exists Ask me whether to overwrite it or create a new one with an incremented suffix (e.g., `document-upload-tasks-2/`).
 Example: `docs/features/document-upload.md` → `docs/features/document-upload-tasks/`
 
 ### Step 2 — Read and analyse the feature file
@@ -42,7 +42,7 @@ Rules:
 - If a user story requires all three layers, produce three separate tasks.
 - Keep task names short and action-oriented (imperative verb: "Create", "Implement", "Add", "Wire up").
 - Tag always goes at the **start** of the task name: `[UI] Create FileDropzoneComponent`.
-
+- Check that this structure does not contradict architecture guidelines in `docs/architecture.md`.
 ### Step 4 — Create task files
 
 For each task, create a separate Markdown file inside `{file_name}-tasks/`.

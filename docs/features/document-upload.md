@@ -52,6 +52,14 @@ Fields:
 
 **UploadComponent** (`/app/upload`)
 
+**Facade: `UploadFacade`** (component-scoped, in `providers`)
+
+The component interacts with the facade only — no direct store or service calls from the template or component class. The facade encapsulates:
+- `DocumentService.upload()` — file upload API call
+- `LanguageStore` — active languages for dropdowns
+- `AuthStore.preferredTargetLanguage` — pre-fill target language
+- `Router` — navigate to detail page on success
+
 ```
 [ File Dropzone — drag & drop or click to browse ]
   Selected: contract.pdf (120 KB)

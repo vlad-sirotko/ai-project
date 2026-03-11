@@ -48,6 +48,10 @@ Creates a new `TranslationJob` for an existing Document. Returns the new job. Do
 
 **TranslationsListComponent** (`/app/translations`)
 
+**Facade: `TranslationsListFacade`** (component-scoped, in `providers`)
+
+The component delegates all data fetching, polling, and mutations to the facade, which encapsulates `DocumentService`, `TranslationStore`, `LanguageStore`, and the polling interval logic.
+
 ```
 My Translations                                       [ Upload New ]
 
