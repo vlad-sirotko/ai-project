@@ -14,3 +14,7 @@ Try to run the code after implementation to ensure it works as expected.
 Mark the task as complete once you have successfully implemented it and verified its functionality, update the task file with any relevant notes about the implementation, and prepare it for review.
 
 Do not do a feature if it is marked as done.
+
+Install any necessary dependencies or tools required for the implementation of the task.
+
+Ask me if you have any questions or need clarification on the task requirements while implementing the task.
