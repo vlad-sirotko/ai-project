@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<AppSetting> AppSettings => Set<AppSetting>();
+    public DbSet<Document> Documents => Set<Document>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -54,6 +55,41 @@ public class AppDbContext : DbContext
 
             entity.Property(s => s.Value)
                 .IsRequired();
+        });
+
+        modelBuilder.Entity<Document>(entity =>
+        {
+            entity.HasKey(d => d.Id);
+
+            entity.Property(d => d.OriginalFileName)
+                .IsRequired()
+                .HasMaxLength(512);
+
+            entity.Property(d => d.OriginalFilePath)
+                .IsRequired()
+                .HasMaxLength(1024);
+
+            entity.Property(d => d.SourceLanguage)
+                .IsRequired()
+                .HasMaxLength(10);
+
+            entity.Property(d => d.FileHash)
+                .IsRequired()
+                .HasMaxLength(64);
+
+            entity.Property(d => d.FileSizeBytes)
+                .IsRequired();
+
+            entity.Property(d => d.UploadedAt)
+                .IsRequired();
+
+            entity.HasIndex(d => new { d.UserId, d.FileHash })
+                .IsUnique();
+
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
