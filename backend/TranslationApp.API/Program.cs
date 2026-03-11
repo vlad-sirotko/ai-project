@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TranslationApp.Application;
 using TranslationApp.Infrastructure;
 using TranslationApp.Infrastructure.Persistence;
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
 
 // JWT Bearer authentication
 var jwtSecret = builder.Configuration["Jwt:Secret"]
