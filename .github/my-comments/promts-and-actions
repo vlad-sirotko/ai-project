@@ -93,4 +93,7 @@ Create a new prompt for pull request
     How fixed - manually
 4) I used my implement-task prompt to implement tasks
    and commit them one by one in the feature/auth-tasks for checking
-   
+   Example of auth-task 4 result 
+   ![alt text](image-3.png)
+   -- I update my prompt if I see any issues or modifications f.e
+      Delete all unnecessary imports in the code files after implementation to keep the code clean and maintainable.
