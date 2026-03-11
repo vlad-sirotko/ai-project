@@ -91,3 +91,6 @@ Create a new prompt for pull request
     ---problem stuck after pushing --- 
     ![alt text](image-2.png)
     How fixed - manually
+4) I used my implement-task prompt to implement tasks
+   and commit them one by one in the feature/auth-tasks for checking
+   
