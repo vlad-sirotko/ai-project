@@ -13,7 +13,6 @@ Follow these global standards across all files and languages in this project.
 - Keep changes focused and scoped to what is requested.
 - Ask clarifying questions if anything is unclear or ambiguous before proceeding.
 - Check and verify code after implementing to ensure correctness and no regressions.
-- Before implementing any code task, read and follow the project structure instructions in `.github/instructions/project-structure.instructions.md`.
 
 ## Agent Usage
 
@@ -21,4 +20,4 @@ Follow these global standards across all files and languages in this project.
 
 ## Ignored Files
 
-Ignore the `my-comments` folder located at the root of the workspace.
+Ignore the `my-comments` folder located at the root of the workspace but push all the changes to the repository.
