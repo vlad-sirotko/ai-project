@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import { AuthStore } from '../../../core/stores/auth.store';
+import { LoginFacade } from './login.facade';
 
 @Component({
   selector: 'app-login',
@@ -11,10 +11,10 @@ import { AuthStore } from '../../../core/stores/auth.store';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [LoginFacade],
 })
 export class LoginComponent {
-  private readonly authStore = inject(AuthStore);
-  private readonly router = inject(Router);
+  private readonly facade = inject(LoginFacade);
   private readonly fb = inject(FormBuilder);
 
   readonly form = this.fb.group({
@@ -36,8 +36,7 @@ export class LoginComponent {
 
     try {
       const { email, password } = this.form.getRawValue();
-      await this.authStore.login(email!, password!);
-      this.router.navigate(['/app/upload']);
+      await this.facade.login(email!, password!);
     } catch {
       this.error.set('Invalid email or password.');
     } finally {

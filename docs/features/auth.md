@@ -46,6 +46,17 @@ JWT-based authentication with register and login. Users have one of two roles: `
 - `LoginComponent` (`/auth/login`) — email + password form, link to register
 - `RegisterComponent` (`/auth/register`) — email + password + confirm password form
 
+**Facades**
+
+Each component delegates all store and navigation calls to a component-scoped facade:
+
+| Component | Facade | Responsibilities |
+|---|---|---|
+| `LoginComponent` | `LoginFacade` | Calls `AuthStore.login()`, navigates to `/app/upload` |
+| `RegisterComponent` | `RegisterFacade` | Calls `AuthStore.register()`, navigates to `/app/upload` |
+
+Facades are `@Injectable()` (no `providedIn`) registered in `providers` on the component, keeping them scoped and easily mockable in tests.
+
 **AuthStore (signal-based)**
 ```
 currentUser: signal<UserModel | null>

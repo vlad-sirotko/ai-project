@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import { AuthStore } from '../../../core/stores/auth.store';
+import { RegisterFacade } from './register.facade';
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
@@ -17,10 +17,10 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RegisterFacade],
 })
 export class RegisterComponent {
-  private readonly authStore = inject(AuthStore);
-  private readonly router = inject(Router);
+  private readonly facade = inject(RegisterFacade);
   private readonly fb = inject(FormBuilder);
 
   readonly form = this.fb.group(
@@ -46,8 +46,7 @@ export class RegisterComponent {
 
     try {
       const { email, password } = this.form.getRawValue();
-      await this.authStore.register(email!, password!);
-      this.router.navigate(['/app/upload']);
+      await this.facade.register(email!, password!);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : null;
       this.error.set(message ?? 'Registration failed. Please try again.');

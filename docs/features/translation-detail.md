@@ -54,6 +54,10 @@ Returns single Document with all nested TranslationJobs including the `Translate
 
 **TranslationDetailComponent** (`/app/translations/:documentId`)
 
+**Facade: `TranslationDetailFacade`** (component-scoped, in `providers`)
+
+The component delegates all data fetching, polling, clipboard interactions, and mutations to the facade, which encapsulates `DocumentService`, `TranslationStore`, and the polling interval/cleanup logic.
+
 **Layout — job in progress:**
 ```
 ← Back to My Translations

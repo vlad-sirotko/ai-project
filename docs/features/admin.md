@@ -42,6 +42,10 @@ Note: `GET /api/languages` (user-facing) filters by `IsActive = true`. The admin
 
 **AdminSettingsComponent** (`/admin/settings`)
 
+**Facade: `AdminSettingsFacade`** (component-scoped, in `providers`)
+
+The component delegates all API calls and state reads to the facade, which encapsulates `AdminService` and any relevant stores.
+
 ```
 Translation Provider
 ────────────────────────────────────────
@@ -66,6 +70,10 @@ Behavior:
 ---
 
 **AdminLanguagesComponent** (`/admin/languages`)
+
+**Facade: `AdminLanguagesFacade`** (component-scoped, in `providers`)
+
+The component delegates all API calls and state reads to the facade, which encapsulates `AdminService` and `LanguageStore`.
 
 ```
 Supported Languages                          [ + Add Language ]
