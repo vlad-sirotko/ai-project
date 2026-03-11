@@ -122,3 +122,7 @@ Create a new prompt for pull request
    --problem: copilot don't use facade pattern for ui
    --fix: updates agent and intruction
    **Critical rule — Facade Pattern**: Every component MUST have a co-located facade (`<component-name>.facade.ts`) declared in the component's `providers` array. Components may only inject their own facade — never stores, services, or repositories directly. The facade handles all state and service orchestration.
+8) Second feature initial run
+   problem - no languages in the list
+![alt text](image-12.png)
+   analizing - ![alt text](image-13.png) - result: this control will be done in admin feature
