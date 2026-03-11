@@ -113,3 +113,6 @@ Create a new prompt for pull request
   - I added a new paraghraph in angular instruction - Use facade pattern for each componement to manage state and interactions with services, so no direct service calls in the component class or template
    - Review prompt: I want to you to check all frontend files and add a patern facade to all the components to avoid direct calls of data sources, try to add a facade to all the components and move all dependencies to this facade
    -update all task files with a new structure where needed
+7) Created tasks for the next feature
+   copilot didn't mark file as done and didn't add notes -fix by prompt: mark that task as done do it the same way as for auth-feature
+   Problem solving: ![alt text](image-10.png)

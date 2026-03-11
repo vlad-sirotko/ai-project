@@ -23,3 +23,13 @@ Create the `Document` entity in the `TranslationApp.Domain` project and the corr
   - `TranslationApp.Infrastructure/Repositories/DocumentRepository.cs`
   - `TranslationApp.Infrastructure/Migrations/`
 - Dependencies: none (first task in the chain)
+
+## Implementation Notes
+- `Document` entity added to `TranslationApp.Domain/Entities/` with navigation property to `User`
+- `UserId` FK configured with cascade delete; unique composite index on `(UserId, FileHash)` for duplicate detection
+- `IDocumentRepository` defined in `TranslationApp.Application/Interfaces/` with `GetByIdAsync`, `GetByUserAndHashAsync`, `GetByUserIdAsync`, `AddAsync`
+- `DocumentRepository` implemented in `TranslationApp.Infrastructure/Repositories/` using `AsNoTracking` for read queries
+- Migration `AddDocumentEntity` generated and applied cleanly to SQLite database
+- Build succeeded with 0 errors
+
+## Status: ✅ Done
