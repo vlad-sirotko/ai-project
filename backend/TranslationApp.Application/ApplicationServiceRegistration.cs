@@ -12,6 +12,7 @@ public static class ApplicationServiceRegistration
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<RegisterHandler>();
+        services.AddScoped<LoginHandler>();
         services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
 
         return services;
