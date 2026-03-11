@@ -13,6 +13,8 @@ public static class ApplicationServiceRegistration
     {
         services.AddScoped<RegisterHandler>();
         services.AddScoped<LoginHandler>();
+        services.AddScoped<GetMeHandler>();
+        services.AddScoped<UpdatePreferencesHandler>();
         services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
 
         return services;
