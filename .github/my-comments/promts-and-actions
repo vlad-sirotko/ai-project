@@ -99,3 +99,4 @@ Create a new prompt for pull request
       Delete all unnecessary imports in the code files after implementation to keep the code clean and maintainable.
    -- My first swagger run
    ![alt text](image-4.png)   
+   -- While implemented task 09(first fronted task) I wanted to init ui app, asked copilot, but copilot created a lot of mocked components from the future tasks, so I had to undo the whole task
