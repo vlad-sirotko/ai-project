@@ -21,4 +21,4 @@ Ask me if you have any questions or need clarification on the task requirements 
 
 Check the task file for dependency tasks and ensure they are completed before starting the implementation of the current task.
 
-Delete all unnecessary imports in the code files after implementation to keep the code clean and maintainable.
+Delete all unnecessary imports or usings in the code files after implementation to keep the code clean and maintainable.
