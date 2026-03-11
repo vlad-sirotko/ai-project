@@ -17,7 +17,3 @@ Follow these global standards across all files and languages in this project.
 ## Agent Usage
 
 - For backend API tasks (C#, ASP.NET Core, EF Core, domain/application/infrastructure layers), use the **C# Expert** agent.
-
-## Ignored Files
-
-Ignore the `my-comments` folder located at the root of the workspace but push all the changes to the repository.
