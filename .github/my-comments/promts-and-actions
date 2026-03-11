@@ -100,3 +100,14 @@ Create a new prompt for pull request
    -- My first swagger run
    ![alt text](image-4.png)   
    -- While implemented task 09(first fronted task) I wanted to init ui app, asked copilot, but copilot created a lot of mocked components from the future tasks, so I had to undo the whole task
+5) First App init with a prompt I want to init api and ui projects and see them in a browser
+   -- What I saw
+   ![alt text](image-5.png)
+   -- After fix: delete standard angular html, show only my application layouts
+   ![alt text](image-6.png)
+   ![alt text](image-7.png)
+   I registed and tried to log in with incorrect password
+  ![alt text](image-9.png)
+  6) As a result of first implementation
+  - I created a new agent for ui 
+  - I added a new paraghraph in angular instruction - Use facade pattern for each componement to manage state and interactions with services, so no direct service calls in the component class or template
