@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<AppSetting> AppSettings => Set<AppSetting>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,6 +41,18 @@ public class AppDbContext : DbContext
                 .HasMaxLength(10);
 
             entity.Property(u => u.CreatedAt)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<AppSetting>(entity =>
+        {
+            entity.HasKey(s => s.Key);
+
+            entity.Property(s => s.Key)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(s => s.Value)
                 .IsRequired();
         });
     }

@@ -18,3 +18,5 @@ Do not do a feature if it is marked as done.
 Install any necessary dependencies or tools required for the implementation of the task.
 
 Ask me if you have any questions or need clarification on the task requirements while implementing the task.
+
+Check the task file for dependency tasks and ensure they are completed before starting the implementation of the current task.
