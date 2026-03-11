@@ -118,3 +118,7 @@ Create a new prompt for pull request
    Problem solving: ![alt text](image-10.png)
    -- While i implemented task 3 copilot found a dependency on Task 4 and started to do both at the same time (i missed that dependency), so i had no objections
    ![alt text](image-11.png)
+   --problem: the same issue for task 07 copilot didn't mark file as done and didn't add notes -fix by prompt: mark that task as done do it the same way as for auth-feature
+   --problem: copilot don't use facade pattern for ui
+   --fix: updates agent and intruction
+   **Critical rule — Facade Pattern**: Every component MUST have a co-located facade (`<component-name>.facade.ts`) declared in the component's `providers` array. Components may only inject their own facade — never stores, services, or repositories directly. The facade handles all state and service orchestration.
