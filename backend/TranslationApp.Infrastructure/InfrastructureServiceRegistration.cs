@@ -19,6 +19,9 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ISupportedLanguageRepository, SupportedLanguageRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
+        services.AddScoped<DeepLTranslationProvider>();
+        services.AddScoped<MockTranslationProvider>();
+        services.AddHttpClient();
 
         return services;
     }
