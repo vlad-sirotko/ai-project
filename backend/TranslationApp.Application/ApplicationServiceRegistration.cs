@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using TranslationApp.Application.Admin;
 using TranslationApp.Application.Auth;
 using TranslationApp.Application.Documents;
 
@@ -17,6 +18,13 @@ public static class ApplicationServiceRegistration
         services.AddScoped<GetMeHandler>();
         services.AddScoped<UpdatePreferencesHandler>();
         services.AddScoped<UploadDocumentHandler>();
+
+        services.AddScoped<GetAdminSettingsHandler>();
+        services.AddScoped<UpdateAdminSettingsHandler>();
+        services.AddScoped<GetAdminLanguagesHandler>();
+        services.AddScoped<AddLanguageHandler>();
+        services.AddScoped<ToggleLanguageHandler>();
+
         services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
 
         return services;

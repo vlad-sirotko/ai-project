@@ -11,12 +11,12 @@ Create all Application-layer CQRS classes for the admin settings feature:
 - **DTOs**: `AppSettingDto` (Key, Value) and `UpdateAdminSettingsRequest` (Dictionary<string, string> Settings).
 
 ## Acceptance Criteria
-- [ ] `GetAdminSettingsQuery` record (no parameters); handler returns `IEnumerable<AppSettingDto>`
-- [ ] `AppSettingDto` with `Key` and `Value` string properties in `TranslationApp.Application/DTOs/`
-- [ ] `UpdateAdminSettingsRequest` with `Dictionary<string, string> Settings`; `UpdateAdminSettingsCommand` wraps it
-- [ ] `UpdateAdminSettingsHandler` calls `IAppSettingRepository.UpsertAsync` for each entry
-- [ ] FluentValidation validator: when `TranslationProvider` key is present its value must be `"Mock"` or `"DeepL"`
-- [ ] Both handlers registered via MediatR (auto-scanned)
+- [x] `GetAdminSettingsQuery` record (no parameters); handler returns `IEnumerable<AppSettingDto>`
+- [x] `AppSettingDto` with `Key` and `Value` string properties in `TranslationApp.Application/DTOs/`
+- [x] `UpdateAdminSettingsRequest` with `Dictionary<string, string> Settings`; `UpdateAdminSettingsCommand` wraps it
+- [x] `UpdateAdminSettingsHandler` calls `IAppSettingRepository.UpsertAsync` for each entry
+- [x] FluentValidation validator: when `TranslationProvider` key is present its value must be `"Mock"` or `"DeepL"`
+- [x] Both handlers registered in `ApplicationServiceRegistration`
 
 ## Technical Notes
 - Layer: API
@@ -28,3 +28,10 @@ Create all Application-layer CQRS classes for the admin settings feature:
   - `TranslationApp.Application/DTOs/AppSettingDto.cs`
   - `TranslationApp.Application/DTOs/UpdateAdminSettingsRequest.cs`
 - Depends on: `01-[DB]-add-admin-repositories.md`
+
+## Implementation Notes
+- Handlers follow the existing `HandleAsync` pattern (no MediatR); registered as scoped services in `ApplicationServiceRegistration`
+- `UpdateAdminSettingsCommandValidator` uses a `HashSet<string>` guard against `"Mock"` / `"DeepL"` — compatible with C# 11 (net7.0 TFM)
+- `HashSet` collection-expression syntax replaced with `new() { }` initializer to stay within C# 11 language version
+
+## Status: ✅ Complete

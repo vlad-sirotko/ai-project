@@ -12,14 +12,14 @@ Create all Application-layer CQRS classes for the admin languages feature:
 - **DTO**: `LanguageDto` (Id, Code, Name, IsActive) and `AddLanguageRequest` (Code, Name).
 
 ## Acceptance Criteria
-- [ ] `GetAdminLanguagesQuery` record (no parameters); handler returns `IEnumerable<LanguageDto>`
-- [ ] `LanguageDto` with `Id`, `Code`, `Name`, `IsActive` properties in `TranslationApp.Application/DTOs/`
-- [ ] `AddLanguageRequest` with `Code` and `Name` string properties; `AddLanguageCommand` wraps it
-- [ ] `AddLanguageHandler` creates a new `SupportedLanguage`, calls `AddAsync`, returns the created `LanguageDto`
-- [ ] `AddLanguageHandler` FluentValidation: `Code` is 2–5 lowercase letters only; `Name` non-empty, max 100 chars; duplicate `Code` returns a domain error
-- [ ] `ToggleLanguageCommand` record with `string Id`; handler flips `IsActive` and calls `UpdateAsync`
-- [ ] `ToggleLanguageHandler` returns not-found error if ID is unknown; returns domain error if attempting to disable `"en"`
-- [ ] All handlers registered via MediatR (auto-scanned)
+- [x] `GetAdminLanguagesQuery` record (no parameters); handler returns `IEnumerable<LanguageDto>`
+- [x] `LanguageDto` with `Id`, `Code`, `Name`, `IsActive` properties in `TranslationApp.Application/DTOs/`
+- [x] `AddLanguageRequest` with `Code` and `Name` string properties; `AddLanguageCommand` wraps it
+- [x] `AddLanguageHandler` creates a new `SupportedLanguage`, calls `AddAsync`, returns the created `LanguageDto`
+- [x] `AddLanguageHandler` FluentValidation: `Code` is 2–5 lowercase letters only; `Name` non-empty, max 100 chars; duplicate `Code` returns a domain error
+- [x] `ToggleLanguageCommand` record with `Guid Id`; handler flips `IsActive` and calls `UpdateAsync`
+- [x] `ToggleLanguageHandler` returns not-found error if ID is unknown; returns domain error if attempting to disable `"en"`
+- [x] All handlers registered in `ApplicationServiceRegistration`
 
 ## Technical Notes
 - Layer: API
@@ -33,3 +33,11 @@ Create all Application-layer CQRS classes for the admin languages feature:
   - `TranslationApp.Application/DTOs/LanguageDto.cs`
   - `TranslationApp.Application/DTOs/AddLanguageRequest.cs`
 - Depends on: `01-[DB]-add-admin-repositories.md`
+
+## Implementation Notes
+- Handlers follow the existing `HandleAsync` pattern (no MediatR); registered as scoped services in `ApplicationServiceRegistration`
+- `ToggleLanguageCommand.Id` uses `Guid` (consistent with `ISupportedLanguageRepository.GetByIdAsync(Guid)` signature)
+- Duplicate code check in `AddLanguageHandler` is performed in-handler using `GetAllAsync` (no extra query method needed)
+- `ToggleLanguageHandler` throws `KeyNotFoundException` for missing IDs and `InvalidOperationException` when disabling `"en"` — consistent with existing exception patterns handled by `ExceptionMiddleware`
+
+## Status: ✅ Complete
