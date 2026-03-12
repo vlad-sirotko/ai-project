@@ -1,4 +1,4 @@
-.admin-layout {
+.main-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -22,9 +22,30 @@
     letter-spacing: 0.5px;
   }
 
+  .top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
   .user-info {
     font-size: 14px;
     opacity: 0.9;
+  }
+
+  .logout-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
   }
 }
 
@@ -93,22 +114,4 @@
   display: flex;
   flex-direction: column;
   overflow: auto;
-
-  .breadcrumb {
-    padding: 12px 24px;
-    font-size: 13px;
-    color: #757575;
-    border-bottom: 1px solid #e0e0e0;
-    background: #fff;
-
-    span {
-      color: #1976d2;
-      font-weight: 500;
-    }
-  }
-
-  .content {
-    flex: 1;
-    padding: 24px;
-  }
 }
