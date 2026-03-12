@@ -44,12 +44,25 @@ export class AdminLanguagesComponent implements OnInit {
   }
 
   protected flagEmoji(code: string): string {
-    if (code.length !== 2) return '🌐';
-    return code
-      .toUpperCase()
-      .split('')
-      .map((c) => String.fromCodePoint(c.charCodeAt(0) + 127397))
-      .join('');
+    const map: Record<string, string> = {
+      en: '🇬🇧',
+      ru: '🇷🇺',
+      pl: '🇵🇱',
+      de: '🇩🇪',
+      fr: '🇫🇷',
+      es: '🇪🇸',
+      it: '🇮🇹',
+      pt: '🇵🇹',
+      zh: '🇨🇳',
+      ja: '🇯🇵',
+      ko: '🇰🇷',
+      ar: '🇸🇦',
+      tr: '🇹🇷',
+      nl: '🇳🇱',
+      sv: '🇸🇪',
+      uk: '🇺🇦',
+    };
+    return map[code.toLowerCase()] ?? '🌐';
   }
 
   private resetForm(): void {

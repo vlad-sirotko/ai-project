@@ -3,7 +3,7 @@
 
   <form class="upload-form" (ngSubmit)="facade.submit()" novalidate>
     <div class="upload-form__section">
-      <app-file-dropzone (fileSelected)="facade.setFile($event)" />
+      <app-file-dropzone (fileSelected)="facade.setFile($event)" (fileCleared)="facade.clearFile()" />
       @if (facade.validationErrors()['file']) {
         <p class="upload-form__error">{{ facade.validationErrors()['file'] }}</p>
       }
@@ -47,7 +47,7 @@
     <button
       type="submit"
       class="upload-form__submit"
-      [disabled]="facade.isLoading()"
+      [disabled]="facade.isLoading() || !facade.isValid()"
     >
       @if (facade.isLoading()) {
         Uploading...

@@ -47,6 +47,7 @@ export class AdminLanguagesFacade {
     try {
       const created = await firstValueFrom(this.adminService.addLanguage(code, name));
       this._languages.update((langs) => [...langs, created]);
+      await this.languageStore.refreshLanguages();
       return true;
     } catch (err: unknown) {
       const message =

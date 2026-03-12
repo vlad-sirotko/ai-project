@@ -21,6 +21,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<UploadDocumentHandler>();
         services.AddScoped<GetDocumentsHandler>();
         services.AddScoped<GetDocumentByIdHandler>();
+        services.AddScoped<AddTranslationJobHandler>();
 
         services.AddScoped<GetLanguagesHandler>();
 

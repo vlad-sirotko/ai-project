@@ -10,4 +10,5 @@ public interface ITranslationJobRepository
     Task<TranslationJob?> GetByDocumentAndLanguageAsync(Guid documentId, string targetLanguage, CancellationToken cancellationToken = default);
     Task AddAsync(TranslationJob job, CancellationToken cancellationToken = default);
     Task UpdateAsync(TranslationJob job, CancellationToken cancellationToken = default);
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 }

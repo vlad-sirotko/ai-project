@@ -138,6 +138,14 @@ public class AppDbContext : DbContext
 
             entity.Property(l => l.IsActive)
                 .IsRequired();
+
+            entity.Property(l => l.IsDefaultSource)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            entity.Property(l => l.IsDefaultTarget)
+                .IsRequired()
+                .HasDefaultValue(false);
         });
     }
 }

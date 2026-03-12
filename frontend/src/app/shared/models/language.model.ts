@@ -3,4 +3,6 @@ export interface LanguageDto {
   code: string;
   name: string;
   isActive: boolean;
+  isDefaultSource: boolean;
+  isDefaultTarget: boolean;
 }

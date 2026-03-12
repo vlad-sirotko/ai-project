@@ -1,7 +1,8 @@
 <div
   class="dropzone"
   [class.dragover]="isDragOver()"
-  [class.file-selected]="selectedFile() !== null"
+  [class.file-selected]="selectedFile() !== null && !isInvalidFile()"
+  [class.file-invalid]="isInvalidFile()"
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave()"
   (drop)="onDrop($event)"
@@ -28,6 +29,12 @@
       <span class="file-icon" aria-hidden="true">📄</span>
       <span class="file-name">{{ file.name }}</span>
       <span class="file-size">{{ formatFileSize(file.size) }}</span>
+      <button
+        type="button"
+        class="file-clear-btn"
+        aria-label="Remove file"
+        (click)="clearFile($event)"
+      >✕ Remove</button>
     </div>
   } @else {
     <div class="placeholder">

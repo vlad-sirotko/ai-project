@@ -15,15 +15,18 @@ public sealed class DocumentsController : ControllerBase
     private readonly UploadDocumentHandler _uploadHandler;
     private readonly GetDocumentsHandler _getDocumentsHandler;
     private readonly GetDocumentByIdHandler _getDocumentByIdHandler;
+    private readonly AddTranslationJobHandler _addTranslationJobHandler;
 
     public DocumentsController(
         UploadDocumentHandler uploadHandler,
         GetDocumentsHandler getDocumentsHandler,
-        GetDocumentByIdHandler getDocumentByIdHandler)
+        GetDocumentByIdHandler getDocumentByIdHandler,
+        AddTranslationJobHandler addTranslationJobHandler)
     {
         _uploadHandler = uploadHandler;
         _getDocumentsHandler = getDocumentsHandler;
         _getDocumentByIdHandler = getDocumentByIdHandler;
+        _addTranslationJobHandler = addTranslationJobHandler;
     }
 
     /// <summary>Uploads a PDF file and creates a translation job for the specified target language.</summary>
@@ -83,6 +86,31 @@ public sealed class DocumentsController : ControllerBase
     {
         var query = new GetDocumentByIdQuery(id, GetCurrentUserId());
         var result = await _getDocumentByIdHandler.HandleAsync(query, cancellationToken);
+        return result is null ? NotFound() : Ok(result);
+    }
+
+    /// <summary>Adds a new translation job for an existing document, or retries a failed translation.</summary>
+    /// <response code="200">Job created or existing active job returned.</response>
+    /// <response code="400">Validation error (missing or empty target language).</response>
+    /// <response code="401">Not authenticated.</response>
+    /// <response code="404">Document not found or does not belong to the user.</response>
+    [HttpPost("{id:guid}/translate")]
+    [ProducesResponseType(typeof(TranslationJobDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> TranslateDocument(
+        Guid id,
+        [FromBody] AddTranslationRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new AddTranslationJobCommand(
+            DocumentId: id,
+            TargetLanguage: request.TargetLanguage,
+            UserId: GetCurrentUserId()
+        );
+
+        var result = await _addTranslationJobHandler.HandleAsync(command, cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 

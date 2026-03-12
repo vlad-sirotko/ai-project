@@ -16,6 +16,12 @@ export class LanguageStore {
   readonly activeLanguages = computed(() =>
     this._languages().filter((lang) => lang.isActive)
   );
+  readonly defaultSourceLanguage = computed(() =>
+    this._languages().find((lang) => lang.isDefaultSource) ?? null
+  );
+  readonly defaultTargetLanguage = computed(() =>
+    this._languages().find((lang) => lang.isDefaultTarget) ?? null
+  );
 
   async loadLanguages(): Promise<void> {
     if (this._languages().length > 0) return;

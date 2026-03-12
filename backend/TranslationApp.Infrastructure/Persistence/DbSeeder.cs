@@ -90,9 +90,9 @@ public static class DbSeeder
 
         var languages = new[]
         {
-            new SupportedLanguage { Id = Guid.NewGuid(), Code = "en", Name = "English", IsActive = true },
-            new SupportedLanguage { Id = Guid.NewGuid(), Code = "ru", Name = "Russian", IsActive = true },
-            new SupportedLanguage { Id = Guid.NewGuid(), Code = "pl", Name = "Polish",  IsActive = true }
+            new SupportedLanguage { Id = Guid.NewGuid(), Code = "en", Name = "English", IsActive = true, IsDefaultSource = true,  IsDefaultTarget = false },
+            new SupportedLanguage { Id = Guid.NewGuid(), Code = "ru", Name = "Russian", IsActive = true, IsDefaultSource = false, IsDefaultTarget = true  },
+            new SupportedLanguage { Id = Guid.NewGuid(), Code = "pl", Name = "Polish",  IsActive = true, IsDefaultSource = false, IsDefaultTarget = false }
         };
 
         context.SupportedLanguages.AddRange(languages);

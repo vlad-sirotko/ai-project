@@ -143,3 +143,12 @@ Create a new prompt for pull request
  bug: when i click to button translate it redirects me to login page and no requests for translating are sent to api; check guards
  BUG:![alt text](image-20.png)
  BUG: ✕ DeepL API returned 403: {"message":"Legacy authentication method 'form body' is no longer supported. Please update to header-based authentication. Find more details in our docs: https://developers.deepl.com/docs/resources/breaking-changes-change-notices/november-2025-deprecation-of-legacy-auth-methods. You can find more info in our docs: https://developers.deepl.com/docs/getting-started/auth"}
+ bug: on supported language page i see a problem with english flag
+ modification prompt: Let's add default source language and target language on upload page; add field isDefault for language, set english for source and russian for target and add preselection on UI
+ Translate button should be disabled unit all validations passed
+
+ Bug: At the moment, while logged in under the admin account, on the **My Translations** page under the file **English.pdf** I see **6 failed RU translations** and **2 successful RU translations**.
+
+Why am I seeing so many of them? I expect to see **only one status per translation**.
+
+bug:if file format is not correct then background of drop down area should be red

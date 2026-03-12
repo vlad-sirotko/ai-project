@@ -31,11 +31,13 @@ public sealed class AddLanguageHandler
             Id = Guid.NewGuid(),
             Code = command.Request.Code.ToLowerInvariant(),
             Name = command.Request.Name,
-            IsActive = true
+            IsActive = true,
+            IsDefaultSource = false,
+            IsDefaultTarget = false
         };
 
         await _languageRepository.AddAsync(language, cancellationToken);
 
-        return new LanguageDto(language.Id, language.Code, language.Name, language.IsActive);
+        return new LanguageDto(language.Id, language.Code, language.Name, language.IsActive, language.IsDefaultSource, language.IsDefaultTarget);
     }
 }
