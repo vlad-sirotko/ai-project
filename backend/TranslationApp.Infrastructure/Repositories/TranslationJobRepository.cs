@@ -19,6 +19,11 @@ public sealed class TranslationJobRepository : ITranslationJobRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(j => j.Id == id, cancellationToken);
 
+    public Task<TranslationJob?> GetByIdWithDocumentAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _context.TranslationJobs
+            .Include(j => j.Document)
+            .FirstOrDefaultAsync(j => j.Id == id, cancellationToken);
+
     public async Task<IReadOnlyList<TranslationJob>> GetByDocumentIdAsync(Guid documentId, CancellationToken cancellationToken = default)
     {
         var results = await _context.TranslationJobs

@@ -19,9 +19,13 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ISupportedLanguageRepository, SupportedLanguageRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
-        services.AddScoped<DeepLTranslationProvider>();
-        services.AddScoped<MockTranslationProvider>();
+
+        // Register both providers as ITranslationProvider so IEnumerable<ITranslationProvider> resolves both
+        services.AddScoped<ITranslationProvider, MockTranslationProvider>();
+        services.AddScoped<ITranslationProvider, DeepLTranslationProvider>();
+
         services.AddHttpClient();
+        services.AddHostedService<TranslationBackgroundService>();
 
         return services;
     }
