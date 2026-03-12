@@ -15,6 +15,6 @@ public sealed class GetLanguagesHandler
     public async Task<IEnumerable<LanguageDto>> HandleAsync(GetLanguagesQuery query, CancellationToken cancellationToken = default)
     {
         var languages = await _languageRepository.GetActiveAsync(cancellationToken);
-        return languages.Select(l => new LanguageDto(l.Id, l.Code, l.Name, l.IsActive));
+        return languages.Select(l => new LanguageDto(l.Id, l.Code, l.Name, l.IsActive, l.IsDefaultSource, l.IsDefaultTarget));
     }
 }

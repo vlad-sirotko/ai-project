@@ -1,10 +1,11 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { AuthStore } from '../../../core/stores/auth.store';
 import { DocumentService } from '../../../core/services/document.service';
+import { LanguageStore } from '../../../core/stores/language.store';
 
 const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
 
@@ -12,6 +13,7 @@ const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
 export class UploadFacade {
   private readonly authStore = inject(AuthStore);
   private readonly documentService = inject(DocumentService);
+  private readonly languageStore = inject(LanguageStore);
   private readonly router = inject(Router);
 
   private readonly _selectedFile = signal<File | null>(null);
@@ -25,6 +27,21 @@ export class UploadFacade {
   readonly targetLang = this._targetLang.asReadonly();
   readonly isLoading = this._isLoading.asReadonly();
   readonly error = this._error.asReadonly();
+
+  constructor() {
+    effect(() => {
+      const defaultSource = this.languageStore.defaultSourceLanguage();
+      const defaultTarget = this.languageStore.defaultTargetLanguage();
+
+      if (defaultSource && !this._sourceLang()) {
+        this._sourceLang.set(defaultSource.code);
+      }
+
+      if (defaultTarget && !this._targetLang()) {
+        this._targetLang.set(defaultTarget.code);
+      }
+    });
+  }
 
   readonly fileTooLargeWarning = computed(() => {
     const file = this._selectedFile();

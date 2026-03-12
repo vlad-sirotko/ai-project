@@ -24,6 +24,6 @@ public sealed class ToggleLanguageHandler
 
         await _languageRepository.UpdateAsync(language, cancellationToken);
 
-        return new LanguageDto(language.Id, language.Code, language.Name, language.IsActive);
+        return new LanguageDto(language.Id, language.Code, language.Name, language.IsActive, language.IsDefaultSource, language.IsDefaultTarget);
     }
 }
