@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
+import { AdminLayoutFacade } from './admin-layout.facade';
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [RouterOutlet],
-  template: '<router-outlet />',
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  templateUrl: './admin-layout.component.html',
+  styleUrl: './admin-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [AdminLayoutFacade],
 })
-export class AdminLayoutComponent {}
+export class AdminLayoutComponent {
+  protected readonly facade = inject(AdminLayoutFacade);
+}

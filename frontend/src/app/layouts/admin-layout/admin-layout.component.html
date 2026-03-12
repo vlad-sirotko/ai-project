@@ -1,0 +1,29 @@
+<div class="admin-layout">
+  <header class="top-bar">
+    <span class="app-title">PDF Translation App — Admin</span>
+    <span class="user-info">{{ facade.userEmail() }}</span>
+  </header>
+
+  <div class="body">
+    <aside class="sidebar">
+      <span class="sidebar-label">Menu</span>
+      <nav>
+        <a routerLink="/app/upload" routerLinkActive="active">Upload</a>
+        <a routerLink="/app/translations" routerLinkActive="active">My Files</a>
+      </nav>
+
+      <span class="sidebar-label sidebar-label--admin">Admin</span>
+      <nav>
+        <a routerLink="/admin/settings" routerLinkActive="active">Settings</a>
+        <a routerLink="/admin/languages" routerLinkActive="active">Languages</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <div class="breadcrumb">Admin / <span>{{ facade.sectionTitle() }}</span></div>
+      <div class="content">
+        <router-outlet />
+      </div>
+    </div>
+  </div>
+</div>

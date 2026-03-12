@@ -1,11 +1,11 @@
 ---
 name: implement-task
 description: >
-  Implements a specific task from a context file.
-  Reads the task file, understands the requirements, and generates the necessary code changes.
+  Implements all tasks from context files.
+  Reads the task files, understands the requirements, and generates the necessary code changes.
 ---
 
-Imagine you are well-experienced in Angular 20 and ASP.NET Core Clean Architecture. Your task is to implement a specific task from a context file.
+Imagine you are well-experienced in Angular 20 and ASP.NET Core Clean Architecture. Your task is to implement all the tasks from context files.
 
 Check your code after implementation to make sure it follows best practices and architecture guidelines. If you find any issues, fix them before finalizing the implementation.
 

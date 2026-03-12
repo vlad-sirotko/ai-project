@@ -1,0 +1,101 @@
+<div class="languages-page">
+  <div class="page-header">
+    <h2>Supported Languages</h2>
+    <button class="add-btn" (click)="toggleAddForm()">+ Add Language</button>
+  </div>
+
+  @if (showAddForm()) {
+    <form class="add-form" (ngSubmit)="onAddSubmit()" #addForm="ngForm">
+      <div class="add-form__fields">
+        <div class="field">
+          <label for="langCode">Code</label>
+          <input
+            id="langCode"
+            type="text"
+            name="code"
+            [(ngModel)]="newCode"
+            required
+            pattern="^[a-z]{2,5}$"
+            maxlength="5"
+            placeholder="e.g. fr"
+            #codeField="ngModel"
+          />
+          @if (codeField.invalid && codeField.touched) {
+            <span class="field-error">2–5 lowercase letters only.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="langName">Name</label>
+          <input
+            id="langName"
+            type="text"
+            name="name"
+            [(ngModel)]="newName"
+            required
+            maxlength="100"
+            placeholder="e.g. French"
+            #nameField="ngModel"
+          />
+          @if (nameField.invalid && nameField.touched) {
+            <span class="field-error">Name is required (max 100 chars).</span>
+          }
+        </div>
+      </div>
+
+      @if (facade.addError()) {
+        <p class="error">{{ facade.addError() }}</p>
+      }
+
+      <div class="add-form__actions">
+        <button type="submit" class="save-btn"
+                [disabled]="addForm.invalid || facade.isLoading()">
+          {{ facade.isLoading() ? 'Adding…' : 'Add' }}
+        </button>
+        <button type="button" class="cancel-btn" (click)="cancelAddForm()">Cancel</button>
+      </div>
+    </form>
+  }
+
+  @if (facade.isLoading() && facade.languages().length === 0) {
+    <p class="loading">Loading…</p>
+  }
+
+  <table class="lang-table">
+    <thead>
+      <tr>
+        <th>Language</th>
+        <th>Code</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (lang of facade.languages(); track lang.id) {
+        <tr>
+          <td class="lang-name">
+            <span class="flag">{{ flagEmoji(lang.code) }}</span>
+            {{ lang.name }}
+          </td>
+          <td class="lang-code">{{ lang.code }}</td>
+          <td>
+            <span class="badge" [class.badge--active]="lang.isActive"
+                  [class.badge--inactive]="!lang.isActive">
+              {{ lang.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td class="lang-actions">
+            @if (lang.code !== 'en') {
+              <button class="toggle-btn"
+                      [class.toggle-btn--disable]="lang.isActive"
+                      [disabled]="facade.isLoading()"
+                      (click)="facade.toggleLanguage(lang.id)">
+                {{ lang.isActive ? 'Disable' : 'Enable' }}
+              </button>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

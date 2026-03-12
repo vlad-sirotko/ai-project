@@ -16,6 +16,7 @@ public static class DbSeeder
     {
         await SeedAdminUserAsync(context, configuration, logger);
         await SeedAppSettingsAsync(context, logger);
+        await SeedSupportedLanguagesAsync(context, logger);
     }
 
     private static async Task SeedAdminUserAsync(AppDbContext context, IConfiguration configuration, ILogger logger)
@@ -73,5 +74,26 @@ public static class DbSeeder
         await context.SaveChangesAsync();
 
         logger.LogInformation("App setting seeded: {Key}=Mock", translationProviderKey);
+    }
+
+    private static async Task SeedSupportedLanguagesAsync(AppDbContext context, ILogger logger)
+    {
+        var anyExists = await context.SupportedLanguages.AnyAsync();
+        if (anyExists)
+        {
+            return;
+        }
+
+        var languages = new[]
+        {
+            new SupportedLanguage { Id = Guid.NewGuid(), Code = "en", Name = "English", IsActive = true },
+            new SupportedLanguage { Id = Guid.NewGuid(), Code = "ru", Name = "Russian", IsActive = true },
+            new SupportedLanguage { Id = Guid.NewGuid(), Code = "pl", Name = "Polish",  IsActive = true }
+        };
+
+        context.SupportedLanguages.AddRange(languages);
+        await context.SaveChangesAsync();
+
+        logger.LogInformation("Seeded {Count} supported languages.", languages.Length);
     }
 }
