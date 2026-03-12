@@ -15,13 +15,13 @@ Create a reusable `StatusBadgeComponent` in `frontend/src/app/shared/components/
 | `Failed` | Red | `✕ Failed` |
 
 ## Acceptance Criteria
-- [ ] `StatusBadgeComponent` is created as a standalone component in `frontend/src/app/shared/components/status-badge/`
-- [ ] Accepts a required `status` input of type `'Pending' | 'Processing' | 'Completed' | 'Failed'`
-- [ ] Renders different CSS classes per status (e.g. `badge--pending`, `badge--processing`, `badge--completed`, `badge--failed`)
-- [ ] The Processing state icon has a CSS `@keyframes` spin animation
-- [ ] Uses `OnPush` change detection
-- [ ] Component is exported and importable from other standalone components
-- [ ] Basic SCSS styles are included in the component's `.scss` file
+- [x] `StatusBadgeComponent` is created as a standalone component in `frontend/src/app/shared/components/status-badge/`
+- [x] Accepts a required `status` input of type `'Pending' | 'Processing' | 'Completed' | 'Failed'`
+- [x] Renders different CSS classes per status (e.g. `badge--pending`, `badge--processing`, `badge--completed`, `badge--failed`)
+- [x] The Processing state icon has a CSS `@keyframes` spin animation
+- [x] Uses `OnPush` change detection
+- [x] Component is exported and importable from other standalone components
+- [x] Basic SCSS styles are included in the component's `.scss` file
 
 ## Technical Notes
 - Layer: UI
@@ -30,3 +30,15 @@ Create a reusable `StatusBadgeComponent` in `frontend/src/app/shared/components/
   - `frontend/src/app/shared/components/status-badge/status-badge.component.html`
   - `frontend/src/app/shared/components/status-badge/status-badge.component.scss`
 - No dependencies on other tasks in this set
+
+## Implementation Notes
+
+- `JobStatus` type (`'Pending' | 'Processing' | 'Completed' | 'Failed'`) defined in `shared/models/translation-job.model.ts` and imported by the component
+- Uses Angular 20 `input.required<JobStatus>()` (no `@Input` decorator)
+- Template uses `@switch` / `@case` (Angular new control flow) for status-to-content mapping
+- `[ngClass]` binds the modifier class as `'badge--' + status().toLowerCase()` (e.g. `badge--processing`)
+- Spin animation applied via `badge__icon--spin` CSS class on the icon `<span>` only, so the label text stays still
+- Exported from `shared/index.ts` barrel for clean imports
+- `TranslationJobModel` and `DocumentModel` created in `shared/models/` as prerequisites for tasks 08/09
+
+## Status: ✅ Done

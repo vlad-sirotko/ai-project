@@ -18,8 +18,14 @@ export class AuthStore {
   readonly isAuthenticated = computed(() => this._currentUser() !== null);
   readonly isAdmin = computed(() => this._currentUser()?.role === 'Admin');
 
+  private readonly _sessionRestorePromise: Promise<void>;
+
   constructor() {
-    this.restoreSession();
+    this._sessionRestorePromise = this.restoreSession();
+  }
+
+  getSessionRestorePromise(): Promise<void> {
+    return this._sessionRestorePromise;
   }
 
   async login(email: string, password: string): Promise<void> {

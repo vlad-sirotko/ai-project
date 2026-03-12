@@ -12,4 +12,5 @@ public class Document
     public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
 
     public User User { get; set; } = null!;
+    public ICollection<TranslationJob> Jobs { get; set; } = new List<TranslationJob>();
 }

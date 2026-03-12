@@ -140,3 +140,6 @@ Create a new prompt for pull request
 ![alt text](image-17.png)
  review: ![alt text](image-18.png)
  deepl key --![alt text](image-19.png)
+ bug: when i click to button translate it redirects me to login page and no requests for translating are sent to api; check guards
+ BUG:![alt text](image-20.png)
+ BUG: ✕ DeepL API returned 403: {"message":"Legacy authentication method 'form body' is no longer supported. Please update to header-based authentication. Find more details in our docs: https://developers.deepl.com/docs/resources/breaking-changes-change-notices/november-2025-deprecation-of-legacy-auth-methods. You can find more info in our docs: https://developers.deepl.com/docs/getting-started/auth"}

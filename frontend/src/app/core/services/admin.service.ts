@@ -14,7 +14,7 @@ export class AdminService {
   }
 
   updateSettings(settings: Record<string, string>): Observable<void> {
-    return this.http.put<void>('/api/admin/settings', settings);
+    return this.http.put<void>('/api/admin/settings', { settings });
   }
 
   getLanguages(): Observable<LanguageDto[]> {

@@ -1,0 +1,33 @@
+<div class="list">
+  <div class="list__header">
+    <h2 class="list__title">My Translations</h2>
+    <a routerLink="/app/upload" class="list__upload-btn">+ Upload New</a>
+  </div>
+
+  @if (facade.documents().length === 0) {
+    <p class="list__empty">No documents yet. <a routerLink="/app/upload">Upload one!</a></p>
+  }
+
+  @for (doc of facade.documents(); track doc.id) {
+    <div class="doc-card">
+      <div class="doc-card__header">
+        <span class="doc-card__name">{{ doc.originalFileName }}</span>
+        <span class="doc-card__meta">
+          {{ doc.sourceLanguage.toUpperCase() }} · {{ doc.uploadedAt | date:'mediumDate' }}
+        </span>
+      </div>
+
+      <div class="doc-card__jobs">
+        @for (job of doc.jobs; track job.id) {
+          <div class="job-row">
+            <span class="job-row__lang">{{ job.targetLanguage.toUpperCase() }}</span>
+            <app-status-badge [status]="job.status" />
+            @if (job.status === 'Completed') {
+              <a [routerLink]="['/app/translations', doc.id]" class="job-row__action">View →</a>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

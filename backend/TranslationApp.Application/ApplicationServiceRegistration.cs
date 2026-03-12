@@ -19,6 +19,8 @@ public static class ApplicationServiceRegistration
         services.AddScoped<GetMeHandler>();
         services.AddScoped<UpdatePreferencesHandler>();
         services.AddScoped<UploadDocumentHandler>();
+        services.AddScoped<GetDocumentsHandler>();
+        services.AddScoped<GetDocumentByIdHandler>();
 
         services.AddScoped<GetLanguagesHandler>();
 

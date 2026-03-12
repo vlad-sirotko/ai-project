@@ -116,7 +116,7 @@ public class AppDbContext : DbContext
                 .IsRequired();
 
             entity.HasOne(j => j.Document)
-                .WithMany()
+                .WithMany(d => d.Jobs)
                 .HasForeignKey(j => j.DocumentId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
