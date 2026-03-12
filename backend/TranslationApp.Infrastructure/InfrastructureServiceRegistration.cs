@@ -15,6 +15,8 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IDocumentRepository, DocumentRepository>();
         services.AddScoped<ITranslationJobRepository, TranslationJobRepository>();
+        services.AddScoped<IAppSettingRepository, AppSettingRepository>();
+        services.AddScoped<ISupportedLanguageRepository, SupportedLanguageRepository>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
 

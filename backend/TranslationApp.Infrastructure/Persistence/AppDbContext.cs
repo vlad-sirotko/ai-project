@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<AppSetting> AppSettings => Set<AppSetting>();
     public DbSet<Document> Documents => Set<Document>();
     public DbSet<TranslationJob> TranslationJobs => Set<TranslationJob>();
+    public DbSet<SupportedLanguage> SupportedLanguages => Set<SupportedLanguage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -118,6 +119,25 @@ public class AppDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(j => j.DocumentId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<SupportedLanguage>(entity =>
+        {
+            entity.HasKey(l => l.Id);
+
+            entity.Property(l => l.Code)
+                .IsRequired()
+                .HasMaxLength(10);
+
+            entity.HasIndex(l => l.Code)
+                .IsUnique();
+
+            entity.Property(l => l.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(l => l.IsActive)
+                .IsRequired();
         });
     }
 }
