@@ -33,6 +33,65 @@
     border-radius: 0.5rem;
     overflow: hidden;
   }
+
+  // Add language section below tabs
+  &__add-lang {
+    margin-top: 1.25rem;
+    position: relative;
+  }
+
+  &__add-lang-btn {
+    padding: 0.5rem 1rem;
+    border: 1px dashed #4f46e5;
+    border-radius: 0.375rem;
+    background: #fff;
+    color: #4f46e5;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    &:hover {
+      background: #eef2ff;
+    }
+  }
+
+  &__lang-dropdown {
+    margin-top: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    max-width: 260px;
+    overflow: hidden;
+  }
+
+  &__lang-option {
+    padding: 0.625rem 1rem;
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: #111827;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+  }
+
+  &__lang-empty {
+    padding: 0.75rem 1rem;
+    margin: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  &__error {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+    color: #991b1b;
+  }
 }
 
 // Tab label layout
@@ -79,14 +138,30 @@
     padding: 1rem;
   }
 
-  &__actions {
+  &__header-row {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 0.75rem;
   }
 
-  &__copy-btn,
-  &__retry-btn {
+  &__heading {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  &__error-heading {
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #991b1b;
+  }
+
+  &__copy-btn {
+    flex-shrink: 0;
     padding: 0.375rem 0.875rem;
     border: 1px solid #d1d5db;
     border-radius: 0.375rem;
@@ -95,15 +170,36 @@
     cursor: pointer;
     color: #374151;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: #f3f4f6;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: default;
+      border-color: #16a34a;
+      color: #16a34a;
     }
   }
 
   &__retry-btn {
+    display: inline-block;
     margin-top: 0.75rem;
+    padding: 0.375rem 0.875rem;
+    border: 1px solid #4f46e5;
+    border-radius: 0.375rem;
+    background: #fff;
+    font-size: 0.875rem;
+    cursor: pointer;
     color: #4f46e5;
-    border-color: #4f46e5;
+
+    &:hover {
+      background: #eef2ff;
+    }
+  }
+
+  &__progress {
+    margin-top: 1rem;
   }
 
   &__text {
@@ -124,9 +220,16 @@
     margin: 0;
     color: #6b7280;
 
+    .spin {
+      display: inline-block;
+      animation: spin 1.2s linear infinite;
+      margin-right: 0.25rem;
+    }
+
     &--error {
       color: #991b1b;
     }
   }
 }
+
 

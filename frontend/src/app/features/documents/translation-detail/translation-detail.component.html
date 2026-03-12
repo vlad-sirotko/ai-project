@@ -19,7 +19,10 @@
             <span class="tab-label">
               <span class="tab-label__flag">{{ flagEmoji(job.targetLanguage) }}</span>
               <span class="tab-label__name">{{ getLanguageName(job.targetLanguage) }}</span>
-              <span class="tab-label__status" [class.tab-label__status--spin]="job.status === 'Pending' || job.status === 'Processing'" [class.tab-label__status--error]="job.status === 'Failed'" [class.tab-label__status--ok]="job.status === 'Completed'">
+              <span class="tab-label__status"
+                [class.tab-label__status--spin]="job.status === 'Pending' || job.status === 'Processing'"
+                [class.tab-label__status--error]="job.status === 'Failed'"
+                [class.tab-label__status--ok]="job.status === 'Completed'">
                 {{ statusIcon(job) }}
               </span>
             </span>
@@ -27,30 +30,48 @@
 
           <div class="job-panel">
             @switch (job.status) {
+
               @case ('Completed') {
                 <div class="job-panel__body">
-                  <div class="job-panel__actions">
-                    <button class="job-panel__copy-btn" (click)="facade.copyText()" type="button">
-                      {{ facade.copyTextCopied() ? '✓ Copied!' : 'Copy to clipboard' }}
+                  <div class="job-panel__header-row">
+                    <h3 class="job-panel__heading">Translated Text ({{ getLanguageName(job.targetLanguage) }})</h3>
+                    <button
+                      class="job-panel__copy-btn"
+                      type="button"
+                      [disabled]="facade.copyTextCopied()"
+                      (click)="facade.copyText()">
+                      {{ facade.copyTextCopied() ? 'Copied ✓' : '📋 Copy Text' }}
                     </button>
                   </div>
                   <textarea class="job-panel__text" readonly>{{ job.translatedText }}</textarea>
                 </div>
               }
+
               @case ('Processing') {
                 <div class="job-panel__body">
-                  <p class="job-panel__msg"><span class="spin">⟳</span> Translation in progress… This may take a few moments.</p>
+                  <p class="job-panel__msg">
+                    <span class="spin">⟳</span> Translation in progress… This may take a few moments.
+                  </p>
+                  <mat-progress-bar mode="indeterminate" class="job-panel__progress"></mat-progress-bar>
                 </div>
               }
+
               @case ('Pending') {
                 <div class="job-panel__body">
-                  <p class="job-panel__msg">○ Queued — waiting to start.</p>
+                  <p class="job-panel__msg">
+                    <span class="spin">⟳</span> Queued — waiting to start.
+                  </p>
+                  <mat-progress-bar mode="indeterminate" class="job-panel__progress"></mat-progress-bar>
                 </div>
               }
+
               @case ('Failed') {
                 <div class="job-panel__body">
-                  <p class="job-panel__msg job-panel__msg--error">✕ {{ job.errorMessage ?? 'Translation failed.' }}</p>
-                  <button class="job-panel__retry-btn" (click)="facade.retryTranslation(job.targetLanguage)" type="button">
+                  <p class="job-panel__error-heading">✕ Translation failed</p>
+                  <p class="job-panel__msg job-panel__msg--error">
+                    {{ job.errorMessage ?? 'Unable to extract text from the PDF.' }}
+                  </p>
+                  <button class="job-panel__retry-btn" type="button" (click)="facade.retryTranslation(job.targetLanguage)">
                     ↻ Retry
                   </button>
                   @if (facade.retryError()) {
@@ -58,11 +79,35 @@
                   }
                 </div>
               }
+
             }
           </div>
         </mat-tab>
       }
     </mat-tab-group>
+
+    <!-- Add Language section below tabs -->
+    <div class="detail__add-lang">
+      <button class="detail__add-lang-btn" type="button" (click)="toggleAddLanguage()">+ Add language</button>
+
+      @if (facade.addLanguageError()) {
+        <p class="detail__error">{{ facade.addLanguageError() }}</p>
+      }
+
+      @if (showAddLanguage()) {
+        <div class="detail__lang-dropdown">
+          @for (lang of facade.availableLanguages(); track lang.code) {
+            <button class="detail__lang-option" type="button" (click)="onAddLanguage(lang.code)">
+              {{ flagEmoji(lang.code) }} {{ lang.name }}
+            </button>
+          }
+          @if (facade.availableLanguages().length === 0) {
+            <p class="detail__lang-empty">All active languages have already been added.</p>
+          }
+        </div>
+      }
+    </div>
+
   } @else {
     <p class="detail__loading">Loading…</p>
   }

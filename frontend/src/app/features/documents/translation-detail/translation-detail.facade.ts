@@ -4,14 +4,17 @@ import { interval, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { DocumentService } from '../../../core/services/document.service';
+import { LanguageStore } from '../../../core/stores/language.store';
 import { TranslationStore } from '../../../core/stores/translation.store';
 import { DocumentModel } from '../../../shared/models/document.model';
+import { SupportedLanguageModel } from '../../../shared/models/supported-language.model';
 import { JobStatus, TranslationJobModel } from '../../../shared/models/translation-job.model';
 
 @Injectable()
 export class TranslationDetailFacade {
   private readonly documentService = inject(DocumentService);
   private readonly translationStore = inject(TranslationStore);
+  private readonly languageStore = inject(LanguageStore);
   private readonly destroyRef = inject(DestroyRef);
 
   private readonly stopPolling$ = new Subject<void>();
@@ -20,7 +23,18 @@ export class TranslationDetailFacade {
   // ── Selected document (from store) ──────────────────────────────────────────
   readonly document: Signal<DocumentModel | null> = this.translationStore.selectedDocument;
 
-  // ── Task 04: selected job ────────────────────────────────────────────────────
+  // ── Languages ────────────────────────────────────────────────────────────────
+  readonly languages = this.languageStore.languages;
+
+  readonly availableLanguages = computed<SupportedLanguageModel[]>(() => {
+    const doc = this.document();
+    const all = this.languageStore.activeLanguages();
+    if (!doc) return all;
+    const usedCodes = new Set(doc.jobs.map(j => j.targetLanguage.toLowerCase()));
+    return all.filter(l => !usedCodes.has(l.code.toLowerCase()));
+  });
+
+  // ── Selected job ─────────────────────────────────────────────────────────────
   private readonly _selectedJobId = signal<string | null>(null);
   readonly selectedJobId = this._selectedJobId.asReadonly();
 
@@ -35,7 +49,7 @@ export class TranslationDetailFacade {
     this._selectedJobId.set(id);
   }
 
-  // ── Task 04: copy text ───────────────────────────────────────────────────────
+  // ── Copy text ────────────────────────────────────────────────────────────────
   private readonly _copyTextCopied = signal(false);
   readonly copyTextCopied = this._copyTextCopied.asReadonly();
 
@@ -47,7 +61,7 @@ export class TranslationDetailFacade {
     });
   }
 
-  // ── Task 05: error signals ───────────────────────────────────────────────────
+  // ── Error signals ────────────────────────────────────────────────────────────
   private readonly _addLanguageError = signal<string | null>(null);
   readonly addLanguageError = this._addLanguageError.asReadonly();
 
@@ -57,6 +71,7 @@ export class TranslationDetailFacade {
   // ── Load ─────────────────────────────────────────────────────────────────────
   loadDocument(documentId: string): void {
     this.currentDocumentId = documentId;
+    this.languageStore.loadLanguages();
     this.documentService.getDocument(documentId).subscribe(doc => {
       this.translationStore.setSelectedDocument(doc);
       if (doc.jobs.length > 0 && !this._selectedJobId()) {
@@ -68,7 +83,7 @@ export class TranslationDetailFacade {
     });
   }
 
-  // ── Task 05: add language ────────────────────────────────────────────────────
+  // ── Add language ─────────────────────────────────────────────────────────────
   addLanguage(targetLang: string): void {
     if (!this.currentDocumentId) return;
     this._addLanguageError.set(null);
@@ -78,7 +93,7 @@ export class TranslationDetailFacade {
     });
   }
 
-  // ── Task 05: retry translation ───────────────────────────────────────────────
+  // ── Retry translation ────────────────────────────────────────────────────────
   retryTranslation(targetLang: string): void {
     if (!this.currentDocumentId) return;
     this._retryError.set(null);

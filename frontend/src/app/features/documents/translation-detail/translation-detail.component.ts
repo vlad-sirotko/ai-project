@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { TranslationDetailFacade } from './translation-detail.facade';
 import { TranslationJobModel } from '../../../shared/models/translation-job.model';
-import { LanguageStore } from '../../../core/stores/language.store';
 
 @Component({
   selector: 'app-translation-detail',
   standalone: true,
-  imports: [RouterLink, DatePipe, MatTabsModule],
+  imports: [RouterLink, DatePipe, MatTabsModule, MatProgressBarModule],
   templateUrl: './translation-detail.component.html',
   styleUrl: './translation-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,17 +18,17 @@ import { LanguageStore } from '../../../core/stores/language.store';
 })
 export class TranslationDetailComponent implements OnInit {
   protected readonly facade = inject(TranslationDetailFacade);
-  private readonly languageStore = inject(LanguageStore);
 
   readonly id = input.required<string>();
 
+  protected readonly showAddLanguage = signal(false);
+
   ngOnInit(): void {
     this.facade.loadDocument(this.id());
-    this.languageStore.loadLanguages();
   }
 
   protected getLanguageName(code: string): string {
-    const lang = this.languageStore.languages().find(l => l.code === code);
+    const lang = this.facade.languages().find(l => l.code === code);
     return lang?.name ?? code.toUpperCase();
   }
 
@@ -61,6 +61,15 @@ export class TranslationDetailComponent implements OnInit {
       case 'Pending': return '⟳';
       case 'Failed': return '✕';
     }
+  }
+
+  protected toggleAddLanguage(): void {
+    this.showAddLanguage.update(v => !v);
+  }
+
+  protected onAddLanguage(langCode: string): void {
+    this.facade.addLanguage(langCode);
+    this.showAddLanguage.set(false);
   }
 
   protected onTabChange(index: number): void {
