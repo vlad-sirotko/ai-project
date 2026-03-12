@@ -13,26 +13,27 @@ Connection status variants: ✅ Connected (chars remaining), ❌ Invalid API key
 
 ## Acceptance Criteria
 **Facade:**
-- [ ] `settings` signal: `{ translationProvider: string; deeplApiKey: string; deeplFreeApi: boolean } | null`
-- [ ] `isLoading` signal (`boolean`); `saveError` signal (`string | null`)
-- [ ] `connectionStatus` signal: `'connected' | 'invalid' | 'mock' | 'idle'` with optional `charsRemaining` number
-- [ ] `loadSettings()` calls `AdminService.getSettings()` and maps to the typed signal
-- [ ] `saveSettings(values)` calls `AdminService.updateSettings()`, refreshes state, then updates `connectionStatus`
-- [ ] When provider is Mock, `connectionStatus` is automatically set to `'mock'`; when `'idle'` the status indicator is hidden
+- [x] `settings` signal: `{ translationProvider: string; deeplApiKey: string; deeplFreeApi: boolean } | null`
+- [x] `isLoading` signal (`boolean`); `saveError` signal (`string | null`)
+- [x] `connectionStatus` signal: `'connected' | 'invalid' | 'mock' | 'idle'` with optional `charsRemaining` number
+- [x] `loadSettings()` calls `AdminService.getSettings()` and maps to the typed signal
+- [x] `saveSettings(values)` calls `AdminService.updateSettings()`, refreshes state, then updates `connectionStatus`
+- [x] When provider is Mock, `connectionStatus` is automatically set to `'mock'`; when `'idle'` the status indicator is hidden
 
 **Component:**
-- [ ] Standalone, `OnPush`, `AdminSettingsFacade` in `providers` array
-- [ ] Provider dropdown renders `Mock` and `DeepL` options bound to facade signal
-- [ ] API key input uses `type="password"`; toggle button switches to `type="text"` and back
-- [ ] **Save** button disabled while `isLoading()` is true
-- [ ] Inline `saveError` message rendered when non-null
-- [ ] Status indicator renders correct icon and text for each `connectionStatus` variant
-- [ ] `loadSettings()` called on component init
+- [x] Standalone, `OnPush`, `AdminSettingsFacade` in `providers` array
+- [x] Provider dropdown renders `Mock` and `DeepL` options bound to facade signal
+- [x] API key input uses `type="password"`; toggle button switches to `type="text"` and back
+- [x] **Save** button disabled while `isLoading()` is true
+- [x] Inline `saveError` message rendered when non-null
+- [x] Status indicator renders correct icon and text for each `connectionStatus` variant
+- [x] `loadSettings()` called on component init
 
-## Technical Notes
-- Layer: UI
-- Key files:
-  - `frontend/src/app/features/admin/settings/admin-settings.facade.ts`
-  - `frontend/src/app/features/admin/settings/admin-settings.component.ts` (+ `.html`, `.scss`)
-- Depends on: `05-[UI]-scaffold-admin-section.md`, `06-[UI]-create-admin-service.md`
-- If the backend has no dedicated status-check endpoint, infer status from whether `DeepL.ApiKey` is non-empty after a successful save
+## Implementation Notes
+- Component maintains a local `draft` signal (initialized from `facade.settings()` after load) to hold in-progress edits — the facade's `settings` signal reflects only the last persisted state
+- `saveSettings(values)` receives the full draft value; no direct signal mutation from the component
+- Connection status is inferred locally (no dedicated backend endpoint): Mock → `'mock'`; DeepL with non-empty key → `'connected'`; DeepL with empty key → `'invalid'`
+- `DeepLFreeApi` is serialized as `'true'`/`'false'` string in the `Record<string, string>` payload to match the `AppSetting` key-value storage model
+- DeepL-specific fields (API key, free-API checkbox) are conditionally rendered using `@if (draft().translationProvider === 'DeepL')`
+
+## Status: ✅ Complete

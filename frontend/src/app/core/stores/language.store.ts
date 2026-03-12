@@ -19,6 +19,14 @@ export class LanguageStore {
 
   async loadLanguages(): Promise<void> {
     if (this._languages().length > 0) return;
+    await this.fetchLanguages();
+  }
+
+  async refreshLanguages(): Promise<void> {
+    await this.fetchLanguages();
+  }
+
+  private async fetchLanguages(): Promise<void> {
     this._isLoading.set(true);
     try {
       const languages = await firstValueFrom(this.languageService.getActiveLanguages());

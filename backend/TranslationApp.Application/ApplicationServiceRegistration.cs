@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TranslationApp.Application.Admin;
 using TranslationApp.Application.Auth;
 using TranslationApp.Application.Documents;
+using TranslationApp.Application.Languages;
 
 namespace TranslationApp.Application;
 
@@ -18,6 +19,8 @@ public static class ApplicationServiceRegistration
         services.AddScoped<GetMeHandler>();
         services.AddScoped<UpdatePreferencesHandler>();
         services.AddScoped<UploadDocumentHandler>();
+
+        services.AddScoped<GetLanguagesHandler>();
 
         services.AddScoped<GetAdminSettingsHandler>();
         services.AddScoped<UpdateAdminSettingsHandler>();

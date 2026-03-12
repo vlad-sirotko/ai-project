@@ -1,0 +1,67 @@
+<div class="settings-page">
+  <h2>Translation Provider Settings</h2>
+
+  @if (facade.isLoading() && !facade.settings()) {
+    <p class="loading">Loading…</p>
+  }
+
+  @if (facade.settings()) {
+    <form class="settings-form" (ngSubmit)="onSave()">
+      <div class="field">
+        <label for="provider">Translation Provider</label>
+        <select id="provider" [ngModel]="draft().translationProvider" name="translationProvider"
+                (ngModelChange)="onProviderChange($event)">
+          <option value="Mock">Mock</option>
+          <option value="DeepL">DeepL</option>
+        </select>
+      </div>
+
+      @if (draft().translationProvider === 'DeepL') {
+        <div class="field">
+          <label for="apiKey">DeepL API Key</label>
+          <div class="input-row">
+            <input
+              [type]="showApiKey ? 'text' : 'password'"
+              id="apiKey"
+              [ngModel]="draft().deeplApiKey"
+              name="deeplApiKey"
+              (ngModelChange)="onApiKeyChange($event)"
+              placeholder="Enter DeepL API key"
+              autocomplete="off"
+            />
+            <button type="button" class="toggle-btn" (click)="showApiKey = !showApiKey">
+              {{ showApiKey ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="field checkbox-field">
+          <label>
+            <input type="checkbox" [ngModel]="draft().deeplFreeApi" name="deeplFreeApi"
+                   (ngModelChange)="onFreeApiChange($event)" />
+            Use DeepL Free API
+          </label>
+        </div>
+      }
+
+      @if (facade.saveError()) {
+        <p class="error">{{ facade.saveError() }}</p>
+      }
+
+      @if (facade.connectionStatus().status !== 'idle') {
+        <div class="status" [class]="'status--' + facade.connectionStatus().status">
+          @switch (facade.connectionStatus().status) {
+            @case ('connected') { ✅ Connected }
+            @case ('invalid') { ❌ Invalid API key }
+            @case ('mock') { ⚪ Mock provider active — no connection needed }
+          }
+        </div>
+      }
+
+      <button type="submit" class="save-btn" [disabled]="facade.isLoading()">
+        {{ facade.isLoading() ? 'Saving…' : 'Save' }}
+      </button>
+    </form>
+  }
+</div>
+
