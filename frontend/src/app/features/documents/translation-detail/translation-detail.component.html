@@ -1,0 +1,40 @@
+<div class="detail">
+  <a routerLink="/app/translations" class="detail__back">← Back to My Translations</a>
+
+  @if (facade.document(); as doc) {
+    <div class="detail__header">
+      <h2 class="detail__title">{{ doc.originalFileName }}</h2>
+      <span class="detail__meta">{{ doc.sourceLanguage.toUpperCase() }} · {{ doc.uploadedAt | date:'mediumDate' }}</span>
+    </div>
+
+    <div class="detail__jobs">
+      @for (job of doc.jobs; track job.id) {
+        <div class="job-panel">
+          <div class="job-panel__header">
+            <span class="job-panel__lang">{{ job.targetLanguage.toUpperCase() }}</span>
+            <app-status-badge [status]="job.status" />
+          </div>
+
+          <div class="job-panel__body">
+            @switch (job.status) {
+              @case ('Completed') {
+                <textarea class="job-panel__text" readonly>{{ job.translatedText }}</textarea>
+              }
+              @case ('Processing') {
+                <p class="job-panel__msg">⟳ Translation in progress… This may take a few moments.</p>
+              }
+              @case ('Pending') {
+                <p class="job-panel__msg">○ Queued — waiting to start.</p>
+              }
+              @case ('Failed') {
+                <p class="job-panel__msg job-panel__msg--error">✕ {{ job.errorMessage ?? 'Translation failed.' }}</p>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="detail__loading">Loading…</p>
+  }
+</div>

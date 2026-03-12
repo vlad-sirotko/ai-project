@@ -1,0 +1,16 @@
+<span class="badge" [ngClass]="'badge--' + status().toLowerCase()">
+  @switch (status()) {
+    @case ('Pending') {
+      <span class="badge__icon">○</span> Pending
+    }
+    @case ('Processing') {
+      <span class="badge__icon badge__icon--spin">⟳</span> Processing
+    }
+    @case ('Completed') {
+      <span class="badge__icon">●</span> Done
+    }
+    @case ('Failed') {
+      <span class="badge__icon">✕</span> Failed
+    }
+  }
+</span>

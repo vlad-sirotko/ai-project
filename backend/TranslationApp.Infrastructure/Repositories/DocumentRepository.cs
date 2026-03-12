@@ -35,6 +35,25 @@ public sealed class DocumentRepository : IDocumentRepository
         return results;
     }
 
+    public async Task<IReadOnlyList<Document>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var results = await _context.Documents
+            .AsNoTracking()
+            .Include(d => d.Jobs)
+            .Where(d => d.UserId == userId)
+            .OrderByDescending(d => d.UploadedAt)
+            .ToListAsync(cancellationToken);
+
+        return results;
+    }
+
+    public Task<Document?> GetByIdForUserAsync(Guid id, Guid userId, CancellationToken cancellationToken = default) =>
+        _context.Documents
+            .AsNoTracking()
+            .Include(d => d.Jobs)
+            .Where(d => d.Id == id && d.UserId == userId)
+            .SingleOrDefaultAsync(cancellationToken);
+
     public async Task AddAsync(Document document, CancellationToken cancellationToken = default)
     {
         await _context.Documents.AddAsync(document, cancellationToken);

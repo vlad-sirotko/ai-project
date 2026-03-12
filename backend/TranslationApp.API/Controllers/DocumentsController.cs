@@ -13,10 +13,17 @@ namespace TranslationApp.API.Controllers;
 public sealed class DocumentsController : ControllerBase
 {
     private readonly UploadDocumentHandler _uploadHandler;
+    private readonly GetDocumentsHandler _getDocumentsHandler;
+    private readonly GetDocumentByIdHandler _getDocumentByIdHandler;
 
-    public DocumentsController(UploadDocumentHandler uploadHandler)
+    public DocumentsController(
+        UploadDocumentHandler uploadHandler,
+        GetDocumentsHandler getDocumentsHandler,
+        GetDocumentByIdHandler getDocumentByIdHandler)
     {
         _uploadHandler = uploadHandler;
+        _getDocumentsHandler = getDocumentsHandler;
+        _getDocumentByIdHandler = getDocumentByIdHandler;
     }
 
     /// <summary>Uploads a PDF file and creates a translation job for the specified target language.</summary>
@@ -49,6 +56,34 @@ public sealed class DocumentsController : ControllerBase
 
         var result = await _uploadHandler.HandleAsync(command, cancellationToken);
         return Ok(result);
+    }
+
+    /// <summary>Returns all documents with translation jobs for the authenticated user.</summary>
+    /// <response code="200">List of documents.</response>
+    /// <response code="401">Not authenticated.</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IReadOnlyList<DocumentWithJobsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetDocuments(CancellationToken cancellationToken)
+    {
+        var query = new GetDocumentsQuery(GetCurrentUserId());
+        var result = await _getDocumentsHandler.HandleAsync(query, cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>Returns a single document with translation jobs by ID.</summary>
+    /// <response code="200">Document found.</response>
+    /// <response code="401">Not authenticated.</response>
+    /// <response code="404">Document not found.</response>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(DocumentWithJobsDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDocumentById(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetDocumentByIdQuery(id, GetCurrentUserId());
+        var result = await _getDocumentByIdHandler.HandleAsync(query, cancellationToken);
+        return result is null ? NotFound() : Ok(result);
     }
 
     private Guid GetCurrentUserId()

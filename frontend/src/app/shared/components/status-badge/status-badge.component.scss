@@ -1,0 +1,43 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &--pending {
+    background-color: #e5e7eb;
+    color: #6b7280;
+  }
+
+  &--processing {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  &--completed {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  &--failed {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  &__icon {
+    display: inline-block;
+
+    &--spin {
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

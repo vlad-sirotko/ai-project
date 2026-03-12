@@ -15,7 +15,7 @@ public static class DbSeeder
     public static async Task SeedAsync(AppDbContext context, IConfiguration configuration, ILogger logger)
     {
         await SeedAdminUserAsync(context, configuration, logger);
-        await SeedAppSettingsAsync(context, logger);
+        await SeedAppSettingsAsync(context, configuration, logger);
         await SeedSupportedLanguagesAsync(context, logger);
     }
 
@@ -55,25 +55,29 @@ public static class DbSeeder
         logger.LogInformation("Admin user seeded: {Email}", email);
     }
 
-    private static async Task SeedAppSettingsAsync(AppDbContext context, ILogger logger)
+    private static async Task SeedAppSettingsAsync(AppDbContext context, IConfiguration configuration, ILogger logger)
     {
-        const string translationProviderKey = "TranslationProvider";
+        await SeedSettingIfMissingAsync(context, "TranslationProvider", "Mock", logger);
 
-        var exists = await context.AppSettings.AnyAsync(s => s.Key == translationProviderKey);
+        var deepLApiKey = configuration["DeepL:ApiKey"];
+        if (!string.IsNullOrWhiteSpace(deepLApiKey))
+        {
+            await SeedSettingIfMissingAsync(context, "DeepLApiKey", deepLApiKey, logger);
+        }
+    }
+
+    private static async Task SeedSettingIfMissingAsync(AppDbContext context, string key, string value, ILogger logger)
+    {
+        var exists = await context.AppSettings.AnyAsync(s => s.Key == key);
         if (exists)
         {
             return;
         }
 
-        context.AppSettings.Add(new AppSetting
-        {
-            Key = translationProviderKey,
-            Value = "Mock"
-        });
-
+        context.AppSettings.Add(new AppSetting { Key = key, Value = value });
         await context.SaveChangesAsync();
 
-        logger.LogInformation("App setting seeded: {Key}=Mock", translationProviderKey);
+        logger.LogInformation("App setting seeded: {Key}", key);
     }
 
     private static async Task SeedSupportedLanguagesAsync(AppDbContext context, ILogger logger)

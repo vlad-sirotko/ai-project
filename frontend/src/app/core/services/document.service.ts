@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { UploadResponseModel } from '../../shared/models/upload-response.model';
+import { DocumentModel } from '../../shared/models/document.model';
 
 @Injectable({ providedIn: 'root' })
 export class DocumentService {
@@ -15,5 +16,13 @@ export class DocumentService {
     formData.append('sourceLang', sourceLang);
     formData.append('targetLang', targetLang);
     return this.http.post<UploadResponseModel>(`${this.baseUrl}/upload`, formData);
+  }
+
+  getDocuments(): Observable<DocumentModel[]> {
+    return this.http.get<DocumentModel[]>(this.baseUrl);
+  }
+
+  getDocument(id: string): Observable<DocumentModel> {
+    return this.http.get<DocumentModel>(`${this.baseUrl}/${id}`);
   }
 }

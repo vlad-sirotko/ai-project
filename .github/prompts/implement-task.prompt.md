@@ -11,7 +11,10 @@ Check your code after implementation to make sure it follows best practices and 
 
 Try to run the code after implementation to ensure it works as expected.
 
-Mark the task as complete once you have successfully implemented it and verified its functionality, update the task file with any relevant notes about the implementation, and prepare it for review.
+Once a task is successfully implemented and verified, update the task file as follows:
+- Add an `## Implementation Notes` section describing key decisions made (e.g. why a class is `sealed`, how a method works, what format the output follows, etc.)
+- Add or update `## Status: ✅ Done` at the bottom of the file
+Do this for every task file before considering it complete.
 
 Do not do a feature if it is marked as done.
 
