@@ -41,6 +41,11 @@ public sealed class AddTranslationJobHandler
             return ToDto(existingJob);
         }
 
+        if (existingJob is { Status: JobStatus.Failed })
+        {
+            await _jobRepository.DeleteAsync(existingJob.Id, cancellationToken);
+        }
+
         var job = new TranslationJob
         {
             Id = Guid.NewGuid(),

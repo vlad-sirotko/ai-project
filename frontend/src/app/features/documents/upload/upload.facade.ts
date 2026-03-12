@@ -84,6 +84,11 @@ export class UploadFacade {
     this._error.set(null);
   }
 
+  clearFile(): void {
+    this._selectedFile.set(null);
+    this._error.set(null);
+  }
+
   setSourceLang(code: string): void {
     this._sourceLang.set(code);
   }

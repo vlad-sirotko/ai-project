@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
   input,
   output,
@@ -18,9 +19,15 @@ import {
 export class FileDropzoneComponent {
   readonly accept = input<string>('.pdf');
   readonly fileSelected = output<File>();
+  readonly fileCleared = output<void>();
 
   protected readonly isDragOver = signal(false);
   protected readonly selectedFile = signal<File | null>(null);
+
+  protected readonly isInvalidFile = computed(() => {
+    const file = this.selectedFile();
+    return file !== null && !file.name.toLowerCase().endsWith('.pdf');
+  });
 
   protected readonly fileInput =
     viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
@@ -58,6 +65,13 @@ export class FileDropzoneComponent {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  protected clearFile(event: MouseEvent): void {
+    event.stopPropagation();
+    this.selectedFile.set(null);
+    this.fileInput().nativeElement.value = '';
+    this.fileCleared.emit();
   }
 
   private selectFile(file: File): void {

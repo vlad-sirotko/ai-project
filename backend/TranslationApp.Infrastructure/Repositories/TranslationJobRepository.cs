@@ -38,7 +38,9 @@ public sealed class TranslationJobRepository : ITranslationJobRepository
     public Task<TranslationJob?> GetByDocumentAndLanguageAsync(Guid documentId, string targetLanguage, CancellationToken cancellationToken = default) =>
         _context.TranslationJobs
             .AsNoTracking()
-            .FirstOrDefaultAsync(j => j.DocumentId == documentId && j.TargetLanguage == targetLanguage, cancellationToken);
+            .Where(j => j.DocumentId == documentId && j.TargetLanguage == targetLanguage)
+            .OrderByDescending(j => j.CreatedAt)
+            .FirstOrDefaultAsync(cancellationToken);
 
     public async Task AddAsync(TranslationJob job, CancellationToken cancellationToken = default)
     {
@@ -50,5 +52,15 @@ public sealed class TranslationJobRepository : ITranslationJobRepository
     {
         _context.TranslationJobs.Update(job);
         await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var job = await _context.TranslationJobs.FindAsync(new object[] { id }, cancellationToken);
+        if (job is not null)
+        {
+            _context.TranslationJobs.Remove(job);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

@@ -25,15 +25,18 @@ public sealed class GetDocumentByIdHandler
             SourceLanguage: document.SourceLanguage,
             FileSizeBytes: document.FileSizeBytes,
             UploadedAt: document.UploadedAt,
-            Jobs: document.Jobs.Select(j => new TranslationJobDto(
-                Id: j.Id,
-                TargetLanguage: j.TargetLanguage,
-                Status: j.Status.ToString(),
-                TranslatedText: j.TranslatedText,
-                ErrorMessage: j.ErrorMessage,
-                CreatedAt: j.CreatedAt,
-                CompletedAt: j.CompletedAt
-            )).ToList()
+            Jobs: document.Jobs
+                .GroupBy(j => j.TargetLanguage)
+                .Select(g => g.OrderByDescending(j => j.CreatedAt).First())
+                .Select(j => new TranslationJobDto(
+                    Id: j.Id,
+                    TargetLanguage: j.TargetLanguage,
+                    Status: j.Status.ToString(),
+                    TranslatedText: j.TranslatedText,
+                    ErrorMessage: j.ErrorMessage,
+                    CreatedAt: j.CreatedAt,
+                    CompletedAt: j.CompletedAt
+                )).ToList()
         );
     }
 }

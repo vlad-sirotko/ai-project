@@ -68,6 +68,21 @@ public sealed class UploadDocumentHandler
             );
         }
 
+        if (existingJob is { Status: JobStatus.Pending or JobStatus.Processing })
+        {
+            return new UploadResponseDto(
+                DocumentId: document.Id,
+                JobId: existingJob.Id,
+                Status: existingJob.Status,
+                IsExisting: true
+            );
+        }
+
+        if (existingJob is { Status: JobStatus.Failed })
+        {
+            await _jobRepository.DeleteAsync(existingJob.Id, cancellationToken);
+        }
+
         var job = new TranslationJob
         {
             Id = Guid.NewGuid(),
