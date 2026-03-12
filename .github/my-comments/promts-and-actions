@@ -126,3 +126,9 @@ Create a new prompt for pull request
    problem - no languages in the list
 ![alt text](image-12.png)
    analizing - ![alt text](image-13.png) - result: this control will be done in admin feature
+9) Admin Page feature
+   I changed implement-task prompt to do all the tasks from the context: our task is to implement all tasks from context files.
+   When I split the feature copilot created 19 tasks,
+   so I asked him to combine them all.
+   --can you combine some tasks into a one?![alt text](image-14.png)
+ 
