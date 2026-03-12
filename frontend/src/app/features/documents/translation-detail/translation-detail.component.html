@@ -7,33 +7,62 @@
       <span class="detail__meta">{{ doc.sourceLanguage.toUpperCase() }} · {{ doc.uploadedAt | date:'mediumDate' }}</span>
     </div>
 
-    <div class="detail__jobs">
-      @for (job of doc.jobs; track job.id) {
-        <div class="job-panel">
-          <div class="job-panel__header">
-            <span class="job-panel__lang">{{ job.targetLanguage.toUpperCase() }}</span>
-            <app-status-badge [status]="job.status" />
-          </div>
+    <mat-tab-group
+      class="detail__tabs"
+      [selectedIndex]="selectedTabIndex"
+      (selectedIndexChange)="onTabChange($event)"
+      dynamicHeight>
 
-          <div class="job-panel__body">
+      @for (job of doc.jobs; track job.id) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="tab-label">
+              <span class="tab-label__flag">{{ flagEmoji(job.targetLanguage) }}</span>
+              <span class="tab-label__name">{{ getLanguageName(job.targetLanguage) }}</span>
+              <span class="tab-label__status" [class.tab-label__status--spin]="job.status === 'Pending' || job.status === 'Processing'" [class.tab-label__status--error]="job.status === 'Failed'" [class.tab-label__status--ok]="job.status === 'Completed'">
+                {{ statusIcon(job) }}
+              </span>
+            </span>
+          </ng-template>
+
+          <div class="job-panel">
             @switch (job.status) {
               @case ('Completed') {
-                <textarea class="job-panel__text" readonly>{{ job.translatedText }}</textarea>
+                <div class="job-panel__body">
+                  <div class="job-panel__actions">
+                    <button class="job-panel__copy-btn" (click)="facade.copyText()" type="button">
+                      {{ facade.copyTextCopied() ? '✓ Copied!' : 'Copy to clipboard' }}
+                    </button>
+                  </div>
+                  <textarea class="job-panel__text" readonly>{{ job.translatedText }}</textarea>
+                </div>
               }
               @case ('Processing') {
-                <p class="job-panel__msg">⟳ Translation in progress… This may take a few moments.</p>
+                <div class="job-panel__body">
+                  <p class="job-panel__msg"><span class="spin">⟳</span> Translation in progress… This may take a few moments.</p>
+                </div>
               }
               @case ('Pending') {
-                <p class="job-panel__msg">○ Queued — waiting to start.</p>
+                <div class="job-panel__body">
+                  <p class="job-panel__msg">○ Queued — waiting to start.</p>
+                </div>
               }
               @case ('Failed') {
-                <p class="job-panel__msg job-panel__msg--error">✕ {{ job.errorMessage ?? 'Translation failed.' }}</p>
+                <div class="job-panel__body">
+                  <p class="job-panel__msg job-panel__msg--error">✕ {{ job.errorMessage ?? 'Translation failed.' }}</p>
+                  <button class="job-panel__retry-btn" (click)="facade.retryTranslation(job.targetLanguage)" type="button">
+                    ↻ Retry
+                  </button>
+                  @if (facade.retryError()) {
+                    <p class="job-panel__msg job-panel__msg--error">{{ facade.retryError() }}</p>
+                  }
+                </div>
               }
             }
           </div>
-        </div>
+        </mat-tab>
       }
-    </div>
+    </mat-tab-group>
   } @else {
     <p class="detail__loading">Loading…</p>
   }

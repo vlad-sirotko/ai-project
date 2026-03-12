@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { UploadResponseModel } from '../../shared/models/upload-response.model';
 import { DocumentModel } from '../../shared/models/document.model';
+import { TranslationJobModel } from '../../shared/models/translation-job.model';
 
 @Injectable({ providedIn: 'root' })
 export class DocumentService {
@@ -24,5 +25,9 @@ export class DocumentService {
 
   getDocument(id: string): Observable<DocumentModel> {
     return this.http.get<DocumentModel>(`${this.baseUrl}/${id}`);
+  }
+
+  addTranslation(documentId: string, targetLang: string): Observable<TranslationJobModel> {
+    return this.http.post<TranslationJobModel>(`${this.baseUrl}/${documentId}/translate`, { targetLanguage: targetLang });
   }
 }
