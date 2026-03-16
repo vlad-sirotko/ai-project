@@ -150,6 +150,14 @@ All notable prompts used throughout the project, grouped by category.
 > service calls from the component class or template. Update all task files with the new
 > structure where needed.
 
+> Use `StringBuilder` instead of `string` for the `ExtractText` method in
+> `PdfTextExtractor` — avoid repeated string allocations when joining page text.
+
+![StringBuilder refactor for PdfTextExtractor](.github/my-comments/image-18.png)
+
+> Review `DeepLTranslationProvider` — are there any unnecessary allocations or
+> repeated object creations inside the request loop that could be moved outside?
+
 ### Bug Fixes (examples)
 
 > I see an HTTP failure response for `http://localhost:4200/api/languages: 404 Not Found`.
@@ -558,8 +566,6 @@ real DeepL integration as the highest-value next step — agreed and proceeded.
 > "I got an api key for deepl, save it in appsettings and use as a default key."
 
 → Copilot updated `appsettings.Development.json` with the key as the default DeepL setting.
-
-![Providing DeepL API key via prompt](.github/my-comments/image-18.png)
 
 **Bugs encountered and fixed via prompts:**
 
