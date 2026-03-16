@@ -121,6 +121,7 @@ A working DeepL Free-tier API key is already pre-configured in
 | `implement-task` | `.github/prompts/implement-task.prompt.md` | Implements all tasks from context files end-to-end |
 | `split-feature` | `.github/prompts/split-feature.prompt.md` | Splits a feature doc into granular [UI]/[API]/[DB] task files |
 | `pull-request` | `.github/prompts/pull-request.prompt.md` | Creates branch, commits, pushes, and opens PR via MCP |
+| `implement-unit-tests` | `.github/prompts/implement-unit-tests.prompt.md` | Implements frontend unit tests for facades, components, and pipes using Jest + jest-preset-angular |
 
 ### Configuration & Context Artifacts
 
@@ -508,3 +509,54 @@ identified the biggest gap — the root `README.md` was still Angular CLI boiler
 
 **Action:** Prompted Copilot to generate the full `README.md` covering app overview,
 prompt history, tools/models, and insights — producing the document you are reading now.
+
+---
+
+### Step 12 — Unit testing (frontend)
+
+**Context:** After the application was feature-complete, the focus shifted to test coverage.
+Karma/Jasmine (the default Angular test runner) is officially deprecated, so the stack was
+replaced with Jest + jest-preset-angular before writing any specs.
+
+**Setup prompt:**
+> Migrate the frontend test runner from Karma/Jasmine to Jest + jest-preset-angular.
+> Remove all Karma packages from `package.json`, delete the Karma config, and add
+> `jest.config.ts` and `setup-jest.ts` so that `npm test` works.
+
+**Result:** Karma packages removed, `jest.config.ts` and `setup-jest.ts` added, `npm test`
+running successfully with zero Karma dependencies.
+
+**Prompt created:** `implement-unit-tests.prompt.md` — a dedicated prompt that drives the
+`angularExpert` agent to write and run specs for a given set of task files. Key rules baked
+into the prompt:
+
+- Read the source file before writing assertions — never guess the public API.
+- Mock services with `jest.fn()` plain objects; mock signal stores with `signal()` properties.
+- Use `TestBed.overrideComponent` to replace a component's co-located facade (standard
+  `TestBed.configureTestingModule` providers cannot override `providers` declared inside a
+  component decorator).
+- Run `npx tsc --noEmit` after writing specs; fix all TypeScript errors before running tests.
+- On test failure: show the exact output and stop — never silently rewrite a spec to force
+  a pass.
+
+**How to use the prompt:**
+1. Open `.github/prompts/implement-unit-tests.prompt.md` as the active prompt in Copilot.
+2. Attach the task file(s) you want to test (e.g., `docs/features/unit-testing-tasks/06-[UI]-test-admin-facades-and-components.md`) as context.
+3. Run with the `angularExpert` agent — the prompt selects it automatically.
+4. The agent reads the task, reads the source file, writes the spec co-located with the
+   source, runs `npm test -- --testPathPattern=<spec-file-name>`, and marks the task done.
+
+**Bugs encountered and fixed via prompts:**
+
+- *`takeUntilDestroyed` outside injection context* — facades using `takeUntilDestroyed`
+  require `TestBed.configureTestingModule` even when no `fixture` is needed, because the
+  Angular DI context must be active during construction.
+- *Signal store mock shape mismatch* — initial mocks returned plain values instead of
+  `signal()` wrappers, causing type errors in components that call signals as functions.
+  Fixed by aligning mock shape to the real store's public API.
+- *`navigator.clipboard` re-mocked in individual specs* — `setup-jest.ts` already defines
+  a global clipboard mock; re-mocking it in a spec overrode it with an incompatible object.
+  Rule added to the prompt: never re-mock `navigator.clipboard`.
+
+**Outcome:** Full unit-test suite covering all facades, key components, and `FileSizePipe`.
+`npm test` reports all specs passing.
