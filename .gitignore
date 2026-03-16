@@ -33,7 +33,6 @@ nuget.config.local
 uploads/
 
 # Secrets / env overrides
-**/appsettings.Development.json
 **/appsettings.Production.json
 **/appsettings.*.local.json
 **/*.pfx

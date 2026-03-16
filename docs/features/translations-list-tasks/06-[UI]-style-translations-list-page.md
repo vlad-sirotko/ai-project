@@ -20,3 +20,13 @@ Write the SCSS for `TranslationsListComponent` to match the wireframe layout: a 
 - Key files: `frontend/src/app/features/documents/translations-list/translations-list.component.scss`
 - Spinning animation for Processing badge may live in `StatusBadgeComponent`'s own SCSS (task 01) — avoid duplicating it here
 - Depends on tasks 01, 04, 05 for the DOM elements to be present before styling
+
+## Implementation Notes
+- The CSS spin animation for the Processing badge is kept exclusively in `StatusBadgeComponent`'s SCSS — it is not duplicated here.
+- A new `.doc-card__add-lang` block is visually separated from the jobs list with a `border-top: 1px dashed` and a light background, sitting at the bottom of each card.
+- `.add-lang-btn` is styled as a small outlined button (no fill) to avoid visual competition with the primary action links.
+- `.job-row__retry-btn` uses a red border and text colour consistent with the `Failed` status badge palette; it is disabled (opacity 0.5, no pointer) when the retry is in-flight.
+- The `doc-card__header` gains `flex-wrap: wrap` so filename and metadata wrap correctly at narrow widths; at ≤600 px the header stacks vertically and action buttons drop their `margin-left: auto` so they stay left-aligned.
+- A `FileSizePipe` was created in `shared/pipes/file-size.pipe.ts` and exported from the shared barrel to format `doc.fileSizeBytes` as `KB`/`MB` in the document metadata row.
+
+## Status: ✅ Done

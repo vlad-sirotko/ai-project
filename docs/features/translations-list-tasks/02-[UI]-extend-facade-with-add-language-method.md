@@ -19,3 +19,10 @@ Add an `addLanguage(documentId: string, targetLang: string)` method to `Translat
 - Depends on `DocumentService.addTranslation()` (already implemented)
 - Depends on `TranslationStore.setDocuments()` / `loadDocuments()` (already implemented)
 - Task 05 (add-language dropdown template) depends on this task
+
+## Implementation Notes
+- `addLanguage(documentId, targetLang)` calls `DocumentService.addTranslation()` and on success calls `loadDocuments()`, which refreshes the store and automatically restarts polling if the new Pending job is detected (via `hasActiveJobs`).
+- Errors are caught with `catchError` + `EMPTY` and logged to console — no unhandled observable errors propagate to the component.
+- The method is public on the facade so the component template can bind to it directly.
+
+## Status: ✅ Done
