@@ -154,3 +154,7 @@ Why am I seeing so many of them? I expect to see **only one status per translati
 bug:if file format is not correct then background of drop down area should be red
 first issue: ![alt text](image-22.png)
 ![alt text](image-21.png)
+11) Analyzing project to check if it includes all requirements
+![alt text](image-23.png)
+![alt text](image-24.png)
+prompt: check my comments folder i added a lot of comments here; it will be useful for you to create readme file; use all the material here
