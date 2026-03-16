@@ -158,3 +158,15 @@ first issue: ![alt text](image-22.png)
 ![alt text](image-23.png)
 ![alt text](image-24.png)
 prompt: check my comments folder i added a lot of comments here; it will be useful for you to create readme file; use all the material here
+
+
+Prompts examples:
+I want to add unit tests for the ui app; suggest me a framework -- jest
+I want to add tests for components, facades and pipes
+
+Create a feature for unit testing from your plan
+Create prompt to implement unit tests for ui 
+1) add instruction to create mock and stubs for the services 
+2) use angular best practices from angular.instruction
+3) after implementatition check and verify the code
+4) run unit tests and ask me to fix failed test
