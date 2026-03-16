@@ -163,8 +163,8 @@ prompt: check my comments folder i added a lot of comments here; it will be usef
 Prompts examples:
 I want to add unit tests for the ui app; suggest me a framework -- jest
 I want to add tests for components, facades and pipes
-
 Create a feature for unit testing from your plan
+
 Create prompt to implement unit tests for ui 
 1) add instruction to create mock and stubs for the services 
 2) use angular best practices from angular.instruction
